@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "rekindled"
+version = "0.1.0"
+description = ""
+authors = ["s7m4b4 <8148044+s7m4b4@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.0.3"
+psycopg2-binary = "^2.9.3"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+black = "^22.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
