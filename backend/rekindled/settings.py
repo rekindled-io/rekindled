@@ -1,13 +1,19 @@
 from pathlib import Path
+from datetime import timedelta
+
 
 import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+LOCALHOSTS=["127.0.0.1", "localhost"]
+
 env = environ.Env(
     DEBUG=(bool, False),
     PROD=(bool, False),
-    ALLOWED_HOSTS=(list, ["127.0.0.1", "localhost"]),
+    ALLOWED_HOSTS=(list, LOCALHOSTS),
+    CORS_WHITELIST=(list, LOCALHOSTS),
+    CSRF_WHITELIST=(list, LOCALHOSTS)
 )
 env.read_env()
 
@@ -31,6 +37,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "users",
     "games",
+    "rest_framework_simplejwt.token_blacklist",
+
 ]
 
 MIDDLEWARE = [
@@ -113,3 +121,30 @@ STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+    "UPDATE_LAST_LOGIN": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
+
+CORS_ORIGIN_WHITELIST = env.list("CORS_WHITELIST")
+CORS_ALLOW_CREDENTIALS = True
+
+DEFAULT_RENDERER_CLASSES = ("rest_framework.renderers.JSONRenderer",)
+
+if DEBUG:
+    DEFAULT_RENDERER_CLASSES = DEFAULT_RENDERER_CLASSES + (
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    )
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication"
+    ],
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ),
+    "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
+}
