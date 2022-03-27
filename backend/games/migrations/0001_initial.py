@@ -9,42 +9,87 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Game',
+            name="Game",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=128, unique=True)),
-                ('slug', models.SlugField(unique=True)),
-                ('image', models.ImageField(default='image.jpg', upload_to=games.models.rename_and_set_upload_path)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=128, unique=True)),
+                ("slug", models.SlugField(unique=True)),
+                (
+                    "image",
+                    models.ImageField(
+                        default="image.jpg",
+                        upload_to=games.models.rename_and_set_upload_path,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='GameAndPlatform',
+            name="GameAndPlatform",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='games.game')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "game",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="games.game"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Platform',
+            name="Platform",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=32, unique=True)),
-                ('games', models.ManyToManyField(related_name='+', through='games.GameAndPlatform', to='games.game')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=32, unique=True)),
+                (
+                    "games",
+                    models.ManyToManyField(
+                        related_name="+",
+                        through="games.GameAndPlatform",
+                        to="games.game",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='gameandplatform',
-            name='platform',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='games.platform'),
+            model_name="gameandplatform",
+            name="platform",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="games.platform"
+            ),
         ),
         migrations.AddField(
-            model_name='game',
-            name='platforms',
-            field=models.ManyToManyField(related_name='+', through='games.GameAndPlatform', to='games.platform'),
+            model_name="game",
+            name="platforms",
+            field=models.ManyToManyField(
+                related_name="+", through="games.GameAndPlatform", to="games.platform"
+            ),
         ),
     ]

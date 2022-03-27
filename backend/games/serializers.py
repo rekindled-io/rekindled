@@ -38,7 +38,6 @@ class GameSimplifiedSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(GameSimplifiedSerializer):
-
     class Meta:
         model = Game
         fields = GameSimplifiedSerializer.Meta.fields

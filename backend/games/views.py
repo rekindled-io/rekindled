@@ -2,9 +2,7 @@ from rest_framework import mixins, status, viewsets, generics
 from rest_framework.decorators import action
 
 from .models import Game, GameAndPlatform, Platform
-from .serializers import (GameSerializer, GameSimplifiedSerializer,
-                          PlatformSerializer)
-
+from .serializers import GameSerializer, GameSimplifiedSerializer, PlatformSerializer
 
 
 class GameViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

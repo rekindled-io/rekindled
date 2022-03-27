@@ -6,14 +6,14 @@ import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-LOCALHOSTS=["127.0.0.1", "localhost"]
+LOCALHOSTS = ["127.0.0.1", "localhost"]
 
 env = environ.Env(
     DEBUG=(bool, False),
     PROD=(bool, False),
     ALLOWED_HOSTS=(list, LOCALHOSTS),
     CORS_WHITELIST=(list, LOCALHOSTS),
-    CSRF_WHITELIST=(list, LOCALHOSTS)
+    CSRF_WHITELIST=(list, LOCALHOSTS),
 )
 env.read_env()
 
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     "users",
     "games",
     "rest_framework_simplejwt.token_blacklist",
-
 ]
 
 MIDDLEWARE = [
