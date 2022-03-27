@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from .models import Handle
+from .serializers import HandleSerializer
+from rest_framework import viewsets
 
-# Create your views here.
+
+class HandleViewSet(viewsets.ModelViewSet):
+    queryset = Handle.objects.all()
+    serializer_class = HandleSerializer
