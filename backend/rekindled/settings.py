@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "users",
     "games",
-    "handles"
+    "handles",
+    "kindles"
 ]
 
 MIDDLEWARE = [
