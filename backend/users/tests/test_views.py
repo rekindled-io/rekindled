@@ -47,3 +47,12 @@ class UserViewTest(APITestCase):
         res = self.client.get(self.url)
 
         self.assertEqual(res.data["original_email"], "")
+
+    def test_update_profile(self):
+        authenticate_user(self.user, self.client)
+        data = {"profile": {"bio": "griffith did nothing wrong"}}
+        self.client.patch(self.url, data, format="json")
+        res = self.client.get(self.url)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data["profile"]["bio"], data["profile"]["bio"])

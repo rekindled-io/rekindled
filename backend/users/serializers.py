@@ -24,6 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        related_fields = ["profile"]
         fields = [
             "username",
             "password",
@@ -57,6 +58,19 @@ class UserSerializer(serializers.ModelSerializer):
         user = get_user_model().objects.create_user(**validated_data)
 
         return user
+
+    def update(self, instance, validated_data):
+        for related_obj_name in self.Meta.related_fields:
+            try:
+                data = validated_data.pop(related_obj_name)
+                related_instance = getattr(instance, related_obj_name)
+
+                for attr_name, value in data.items():
+                    setattr(related_instance, attr_name, value)
+                related_instance.save()
+            except KeyError:
+                pass
+        return super().update(instance, validated_data)
 
     def get_original_email(self, obj):
         """
