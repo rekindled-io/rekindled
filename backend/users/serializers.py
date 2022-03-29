@@ -20,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     profile = ProfileSerializer(partial=True, required=False)
     password_confirm = fields.CharField(write_only=True)
+    original_email = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -32,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
             "email",
             "profile",
+            "original_email"
         ]
         extra_kwargs = {
             "password": {"write_only": True},
@@ -55,3 +57,12 @@ class UserSerializer(serializers.ModelSerializer):
         user = get_user_model().objects.create_user(**validated_data)
 
         return user
+
+    def get_original_email(self, obj):
+        """
+        Only show unhashed email if it's the owner for privacy reasons.
+        """
+        if request := self.context.get("request"):
+            if not request.user == obj:
+                return ""
+        return obj.email

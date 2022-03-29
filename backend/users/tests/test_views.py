@@ -45,3 +45,5 @@ class UserViewTest(APITestCase):
 
     def test_check_user_email_is_invisible_when_anonymous(self):
         res = self.client.get(self.url)
+
+        self.assertEqual(res.data["original_email"], "")
