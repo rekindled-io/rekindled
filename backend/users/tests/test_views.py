@@ -22,7 +22,7 @@ class BaseUserTest(APITestCase):
         self.client = APIClient()
 
 
-class UserViewTest(APITestCase):
+class UserDetailViewTest(APITestCase):
     def setUp(self):
         self.user = UserFactory()
         self.client = APIClient()
@@ -56,3 +56,14 @@ class UserViewTest(APITestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["profile"]["bio"], data["profile"]["bio"])
+
+class TestUserListView(APITestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.client = APIClient()
+        self.url = reverse("user-list")
+
+    def test_view_when_anonymous(self):
+        res = self.client.get(self.url)
+
+        self.assertTrue(res.data)
