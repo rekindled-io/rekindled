@@ -17,3 +17,4 @@ venv.bak/
 # Frontend
 node_modules/
 .nuxt/
+coverage/
