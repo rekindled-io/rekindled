@@ -6,7 +6,7 @@ import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-LOCALHOSTS = ["127.0.0.1", "localhost"]
+LOCALHOSTS = ["*localhost:*", "*"]
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -151,4 +151,5 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ),
     "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
+    "DEFAULT_PAGINATION_CLASS": "rekindled.pagination.CustomPagination",
 }
