@@ -14,6 +14,7 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, LOCALHOSTS),
     CORS_WHITELIST=(list, LOCALHOSTS),
     CSRF_WHITELIST=(list, LOCALHOSTS),
+    HASHID_SALT=(str, "DEV") 
 )
 env.read_env()
 
@@ -161,3 +162,9 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": DEFAULT_RENDERER_CLASSES,
     "DEFAULT_PAGINATION_CLASS": "rekindled.pagination.CustomPagination",
 }
+
+#############################
+# hashids
+#############################
+
+HASHIDS = {"SALT": env("HASHID_SALT", "DEV"), "MIN_LENGTH": 11}
