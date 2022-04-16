@@ -38,6 +38,9 @@ class GameSimplifiedSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(GameSimplifiedSerializer):
+    image = serializers.URLField(read_only=True, source='image.url')
+    handle_count = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Game
-        fields = GameSimplifiedSerializer.Meta.fields
+        fields = GameSimplifiedSerializer.Meta.fields + ["image", "handle_count"]

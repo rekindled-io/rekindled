@@ -1,6 +1,7 @@
 from rest_framework import mixins, status, viewsets, generics
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter
+from django.db.models import Count
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -12,7 +13,9 @@ from .filters import GameFilter
 
 
 class GameViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-    queryset = Game.objects.prefetch_related("platforms").order_by("name")
+    queryset = Game.objects.annotate(
+        handle_count=Count("gameandplatform__handle")
+    ).prefetch_related("platforms").order_by("name")
     serializer_class = GameSerializer
     filterset_class = GameFilter
     filter_backends = [DjangoFilterBackend, OrderingFilter]
