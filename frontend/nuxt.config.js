@@ -23,9 +23,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     {
-      src: "@/plugins/services.ts",
-      src: "@/plugins/vee-validate.js",
-      src: "@/plugins/services.ts",
+      src: "~/plugins/vee-validate.js",
+      src: "~/plugins/services.ts",
     },
   ],
 
@@ -55,7 +54,9 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    transpile: ["vee-validate/dist/rules"],
+  },
 
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || "localhost:8000",
