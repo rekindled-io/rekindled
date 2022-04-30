@@ -3,7 +3,7 @@
     <div class="max-w-6xl mx-auto py-3">
       <div class="flex items-center justify-between">
         <div class="flex flex-col items-center font-semibold text-white">
-          rekindled
+          <Logo />
         </div>
         <div>
           <NuxtLink to="/search">
