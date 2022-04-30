@@ -4,9 +4,37 @@ from rest_framework import serializers
 from games.models import Game, GameAndPlatform, Platform
 from games.serializers import GameAndPlatformSerializer
 
+from rekindled.converters import HashidsConverter
+
 from .models import Handle
 
 User = get_user_model()
+
+
+class BulkCreateListSerializer(serializers.ListSerializer):
+    def create(self, validated_data):
+        result = [self.child.create(attrs) for attrs in validated_data]
+
+        try:
+            self.child.Meta.model.objects.bulk_create(result)
+        except IntegrityError as e:
+            raise ValidationError(e)
+
+        return result
+
+
+class SlimHandleSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        slug_field="username",
+        required=True,
+        allow_null=False,
+        queryset=User.objects.all(),
+    )
+    game_and_platform = GameAndPlatformSerializer()
+
+    class Meta:
+        model = Handle
+        fields = ["id", "user", "game_and_platform"]
 
 
 class HandleSerializer(serializers.ModelSerializer):
@@ -31,6 +59,28 @@ class HandleSerializer(serializers.ModelSerializer):
             "end_period",
             "region",
         ]
+        list_serializer_class = BulkCreateListSerializer
+
+    def create(self, validated_data):
+        game_and_platform = validated_data.pop("game_and_platform")
+        instance = Handle(
+            **validated_data,
+            game_and_platform=GameAndPlatform.objects.get(
+                game=game_and_platform["game"],
+                platform=game_and_platform["platform"],
+            )
+        )
+
+        if isinstance(self._kwargs["data"], dict):
+            instance.save()
+
+        return instance
+
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        res["id"] = HashidsConverter.encode_id(res["id"])
+
+        return res
 
     def get_start_period(self, obj):
         return obj.start_period.year if obj.start_period else None
