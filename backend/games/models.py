@@ -1,17 +1,24 @@
 import os
 from django.db import models
+from functools import partial
 
 
-def rename_and_set_upload_path(instance, filename):
+def _get_upload_to_path(instance, filename, name):
     _, ext = os.path.splitext(filename)
 
-    return f"cover/{instance.slug}{ext}"
+    return f"{instance.slug}/{name}{ext}"
+
+
+def rename_and_set_upload_path(name):
+    return partial(_get_upload_to_path, name=name)
 
 
 class Game(models.Model):
     name = models.CharField(null=False, unique=True, max_length=128)
     slug = models.SlugField(null=False, unique=True)
-    image = models.ImageField(default="image.jpg", upload_to=rename_and_set_upload_path)
+    image = models.ImageField(default="image.jpg", upload_to=rename_and_set_upload_path(name="image"))
+    cover = models.ImageField(default="cover.jpg", upload_to=rename_and_set_upload_path(name="cover"))
+    icon = models.ImageField(default="icon.jpg", upload_to=rename_and_set_upload_path(name="icon"))
     platforms = models.ManyToManyField(
         "Platform", through="GameAndPlatform", related_name="+"
     )
