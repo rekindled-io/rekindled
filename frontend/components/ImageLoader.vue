@@ -12,18 +12,18 @@ export default {
   props: {
     imageSource: {
       type: String,
-      required: true,
+      required: true
     },
     imageClass: {
       type: String,
       required: false,
-      default: "",
-    },
+      default: ''
+    }
   },
   data() {
     return {
       imageLoaded: false,
-      image: new Image(),
+      image: new Image()
     };
   },
   mounted() {
@@ -39,7 +39,7 @@ export default {
     },
     imageOnLoad() {
       this.imageLoaded = true;
-    },
-  },
+    }
+  }
 };
 </script>
