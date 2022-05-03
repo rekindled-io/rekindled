@@ -17,13 +17,21 @@ export default {
 
   css: ['~/assets/css/main.css'],
 
-  plugins: [{ src: '~/plugins/vee-validate.js' }, { src: '~/plugins/services.ts' }, { src: '~/plugins/tippy.js' }],
+  plugins: [
+    { src: '~/plugins/vee-validate.js' },
+    { src: '~/plugins/services.ts' },
+    { src: '~/plugins/tippy.js' },
+    { src: '~/plugins/axios.js' },
+    { src: '~/plugins/vuex-persistedstate.js' },
+    { src: '~/plugins/truncate.js' },
+    { src: '~/plugins/vue-select.js' }
+  ],
 
   components: true,
 
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/tailwindcss', '@nuxtjs/svg'],
 
-  modules: ['@nuxtjs/axios'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/recaptcha'],
 
   axios: {
     baseURL: process.env.BASE_URL || 'http://localhost:8000',
@@ -37,5 +45,12 @@ export default {
 
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'localhost:8000'
+  },
+
+  recaptcha: {
+    siteKey: process.env.RECAPTCHA_SITE_KEY,
+    version: 'v2',
+    hideBadge: true,
+    size: 'invisible'
   }
 };
