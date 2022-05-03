@@ -7,9 +7,7 @@
         </div>
         <div>
           <NuxtLink to="/search">
-            <div
-              class="text-lg font-bold text-gray-800 tracking-wide hover:text-yellow-300 hover:underline"
-            >
+            <div class="text-lg font-bold text-gray-800 tracking-wide hover:text-yellow-300 hover:underline">
               search
             </div>
           </NuxtLink>

@@ -1,17 +1,7 @@
 <template>
-  <ValidationProvider
-    v-slot="{ errors, classes }"
-    tag="div"
-    slim
-    :rules="rules"
-    :vid="vid"
-  >
+  <ValidationProvider v-slot="{ errors, classes }" tag="div" slim :rules="rules" :vid="vid">
     <div class="group relative">
-      <Icon
-        v-if="icon"
-        class="absolute h-6 w-6 inset-y-0 pointer-events-none"
-        :name="icon"
-      />
+      <Icon v-if="icon" class="absolute h-6 w-6 inset-y-0 pointer-events-none" :name="icon" />
       <input
         v-model="innerValue"
         :name="name"
@@ -24,7 +14,7 @@
           'has-value': hasValue,
           'focus:border-yellow-400': hover,
           // Probably should convert below to calculated offset value
-          'pl-7': icon,
+          'pl-7': icon
         }"
       />
       <label
@@ -34,87 +24,69 @@
           'text-gray-400': !errors[0],
           'text-red-600': errors[0],
           'text-xs -translate-y-full opacity-0': hasValue,
-          'pl-6': icon,
+          'pl-6': icon
         }"
       >
         {{ label }}
-        <span class="text-red-400">{{ required ? "•" : "" }}</span>
+        <span class="text-red-400">{{ required ? '•' : '' }}</span>
       </label>
-      <span
-        v-if="errors[0]"
-        class="block text-red-600 text-xs absolute"
-        :class="classes"
-        >{{ errors[0] }}</span
-      >
+      <span v-if="errors[0]" class="block text-red-600 text-xs absolute" :class="classes">{{ errors[0] }}</span>
     </div>
   </ValidationProvider>
 </template>
 
 <script>
-import { ValidationProvider } from "vee-validate";
-
 export default {
-  components: {
-    ValidationProvider,
-  },
   props: {
     required: {
       type: Boolean,
-      default: false,
+      default: false
     },
     rules: {
-      type: [Object, String],
+      type: [Object, String]
     },
     label: {
       type: String,
-      default: "",
+      default: ''
     },
     placeholder: {
       type: String,
-      default: "",
+      default: ''
     },
     name: {
       type: String,
-      default: "",
+      default: ''
     },
     type: {
       type: String,
-      default: "text",
+      default: 'text',
       validator(value) {
-        return [
-          "url",
-          "text",
-          "password",
-          "tel",
-          "search",
-          "number",
-          "email",
-        ].includes(value);
-      },
+        return ['url', 'text', 'password', 'tel', 'search', 'number', 'email'].includes(value);
+      }
     },
     vid: {
       type: String,
-      default: undefined,
+      default: undefined
     },
     value: {
       type: null,
-      default: "",
+      default: ''
     },
     hover: {
       type: Boolean,
-      default: false,
+      default: false
     },
     borderColor: {
       type: String,
-      default: "border-gray-800",
+      default: 'border-gray-800'
     },
     icon: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
   data: () => ({
-    innerValue: "",
+    innerValue: ''
   }),
   computed: {
     hasValue() {
@@ -122,15 +94,15 @@ export default {
     },
     borderCSS() {
       return {
-        "border-black": this.borderColor,
+        'border-black': this.borderColor
       };
-    },
+    }
   },
   watch: {
     innerValue(value) {
-      this.$emit("input", value);
-    },
-  },
+      this.$emit('input', value);
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
