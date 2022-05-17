@@ -57,6 +57,7 @@ class UserDetailViewTest(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["profile"]["bio"], data["profile"]["bio"])
 
+
 class TestUserListView(APITestCase):
     def setUp(self):
         self.user = UserFactory()

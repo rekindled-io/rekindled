@@ -14,7 +14,7 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, LOCALHOSTS),
     CORS_WHITELIST=(list, LOCALHOSTS),
     CSRF_WHITELIST=(list, LOCALHOSTS),
-    HASHID_SALT=(str, "DEV") 
+    HASHID_SALT=(str, "DEV"),
 )
 env.read_env()
 
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "users",
     "games",
     "handles",
-    "kindles"
+    "kindles",
 ]
 
 MIDDLEWARE = [

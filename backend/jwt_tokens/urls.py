@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from .views import (CookieTokenObtainPairView, CookieTokenRefreshView)
+from .views import CookieTokenObtainPairView, CookieTokenRefreshView
 
 
 urlpatterns = [

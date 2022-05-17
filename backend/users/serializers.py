@@ -38,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "profile",
             "original_email",
-            "hashed_email"
+            "hashed_email",
         ]
         extra_kwargs = {
             "password": {"write_only": True},

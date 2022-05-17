@@ -11,11 +11,12 @@ from .serializers import GameSerializer, GameSimplifiedSerializer, PlatformSeria
 from .filters import GameFilter
 
 
-
 class GameViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-    queryset = Game.objects.annotate(
-        handle_count=Count("gameandplatform__handle")
-    ).prefetch_related("platforms").order_by("name")
+    queryset = (
+        Game.objects.annotate(handle_count=Count("gameandplatform__handle"))
+        .prefetch_related("platforms")
+        .order_by("name")
+    )
     serializer_class = GameSerializer
     filterset_class = GameFilter
     filter_backends = [DjangoFilterBackend, OrderingFilter]

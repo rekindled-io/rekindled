@@ -16,9 +16,15 @@ def rename_and_set_upload_path(name):
 class Game(models.Model):
     name = models.CharField(null=False, unique=True, max_length=128)
     slug = models.SlugField(null=False, unique=True)
-    image = models.ImageField(default="image.jpg", upload_to=rename_and_set_upload_path(name="image"))
-    cover = models.ImageField(default="cover.jpg", upload_to=rename_and_set_upload_path(name="cover"))
-    icon = models.ImageField(default="icon.jpg", upload_to=rename_and_set_upload_path(name="icon"))
+    image = models.ImageField(
+        default="image.jpg", upload_to=rename_and_set_upload_path(name="image")
+    )
+    cover = models.ImageField(
+        default="cover.jpg", upload_to=rename_and_set_upload_path(name="cover")
+    )
+    icon = models.ImageField(
+        default="icon.jpg", upload_to=rename_and_set_upload_path(name="icon")
+    )
     platforms = models.ManyToManyField(
         "Platform", through="GameAndPlatform", related_name="+"
     )

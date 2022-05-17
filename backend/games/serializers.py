@@ -21,8 +21,8 @@ class GameAndPlatformSerializer(serializers.ModelSerializer):
         required=True,
         slug_field="name",
     )
-    cover = serializers.URLField(read_only=True, source='game.cover.url')
-    icon = serializers.URLField(read_only=True, source='game.icon.url')
+    cover = serializers.URLField(read_only=True, source="game.cover.url")
+    icon = serializers.URLField(read_only=True, source="game.icon.url")
 
     class Meta:
         model = GameAndPlatform
@@ -40,11 +40,16 @@ class GameSimplifiedSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(GameSimplifiedSerializer):
-    image = serializers.URLField(read_only=True, source='image.url')
-    cover = serializers.URLField(read_only=True, source='cover.url')
-    icon = serializers.URLField(read_only=True, source='icon.url')
+    image = serializers.URLField(read_only=True, source="image.url")
+    cover = serializers.URLField(read_only=True, source="cover.url")
+    icon = serializers.URLField(read_only=True, source="icon.url")
     handle_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Game
-        fields = GameSimplifiedSerializer.Meta.fields + ["image", "cover", "icon", "handle_count"]
+        fields = GameSimplifiedSerializer.Meta.fields + [
+            "image",
+            "cover",
+            "icon",
+            "handle_count",
+        ]
