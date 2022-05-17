@@ -3,6 +3,8 @@ from rest_framework import fields, serializers
 from rest_framework.serializers import ValidationError
 from rest_framework.validators import UniqueValidator
 
+import hashlib
+
 from .models import Profile
 
 User = get_user_model()
@@ -21,6 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(partial=True, required=False)
     password_confirm = fields.CharField(write_only=True)
     original_email = serializers.SerializerMethodField()
+    hashed_email = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -34,7 +37,8 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
             "email",
             "profile",
-            "original_email"
+            "original_email",
+            "hashed_email"
         ]
         extra_kwargs = {
             "password": {"write_only": True},
@@ -80,3 +84,10 @@ class UserSerializer(serializers.ModelSerializer):
             if not request.user == obj:
                 return ""
         return obj.email
+
+    def get_hashed_email(self, obj):
+        """
+        Hashed email is required for Gravatar to work.
+        """
+        hashed = obj.email.encode()
+        return hashlib.md5(hashed).hexdigest()
