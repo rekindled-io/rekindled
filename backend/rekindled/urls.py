@@ -20,6 +20,7 @@ router.registry.extend(KindleRouter.registry)
 urlpatterns = [
     path("", include(router.urls)),
     path("admin/", admin.site.urls),
+    path("", include("users.urls")),
 ] + TokenURL
 
 if settings.DEBUG:

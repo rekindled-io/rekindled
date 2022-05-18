@@ -98,6 +98,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CAPTCHA_SECRET_KEY = env("CAPTCHA_SECRET_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe")
+
 #############################
 # Security
 #############################
@@ -126,6 +128,25 @@ STATIC_URL = "/static/"
 
 MEDIA_ROOT = str(BASE_DIR / "media")
 MEDIA_URL = "/media/"
+
+##########################
+# Email
+##########################
+
+if DEBUG:
+    # Send emails to memory for testing
+    EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+
+EMAIL = {
+    "FROM": env("DJANGO_FROM_EMAIL", default="noreply@example.com"),
+    "REPLY_TO": env.list("DJANGO_REPLY_TO_EMAIL", default=["noreply@example.com"]),
+}
+
+EMAIL_HOST = env("EMAIL_HOST", default="localhost")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="rekindled")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="password123")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 #############################
 # simplejwt

@@ -1,7 +1,10 @@
+import requests
+
 from django.contrib.auth import get_user_model
 from rest_framework import fields, serializers
 from rest_framework.serializers import ValidationError
 from rest_framework.validators import UniqueValidator
+from rekindled import settings
 
 import hashlib
 
@@ -24,6 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
     password_confirm = fields.CharField(write_only=True)
     original_email = serializers.SerializerMethodField()
     hashed_email = serializers.SerializerMethodField()
+    captcha = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
@@ -39,6 +43,7 @@ class UserSerializer(serializers.ModelSerializer):
             "profile",
             "original_email",
             "hashed_email",
+            "captcha",
         ]
         extra_kwargs = {
             "password": {"write_only": True},
@@ -58,6 +63,8 @@ class UserSerializer(serializers.ModelSerializer):
             del validated_data["password_confirm"]
         if "profile" in validated_data:
             del validated_data["profile"]
+        if "captcha" in validated_data:
+            del validated_data["captcha"]
 
         user = get_user_model().objects.create_user(**validated_data)
 
@@ -91,3 +98,19 @@ class UserSerializer(serializers.ModelSerializer):
         """
         hashed = obj.email.encode()
         return hashlib.md5(hashed).hexdigest()
+
+    def validate_captcha(self, value):
+        SECRET_KEY = settings.CAPTCHA_SECRET_KEY
+
+        if settings.DEBUG:
+            # These are dummy values used for testing, reference -
+            # https://developers.google.com/recaptcha/docs/faq#id-like-to-run-automated-tests-with-recaptcha.-what-should-i-do
+            value = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+
+        try:
+            url = f"https://www.google.com/recaptcha/api/siteverify?secret={SECRET_KEY}&response={value}"
+            res = requests.get(url, headers={"Content-Type": "application/json"})
+            if not res.json()["success"]:
+                raise ValidationError({"detail": "Invalid captcha token."})
+        except requests.HTTPError:
+            raise ValidationError({"detail": "Error validating CAPTCHA."})
