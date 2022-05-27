@@ -61,8 +61,20 @@ class HandleSerializer(serializers.ModelSerializer):
         ]
         list_serializer_class = BulkCreateListSerializer
 
+    def validate_game_and_platform(self, value):
+        try:
+            GameAndPlatform.objects.get(
+                game=value["game"],
+                platform=value["platform"],
+            )
+        except GameAndPlatform.DoesNotExist:
+            raise serializers.ValidationError({"detail": "The game/platform doesn't exist."})
+
+        return value
+
     def create(self, validated_data):
         game_and_platform = validated_data.pop("game_and_platform")
+
         instance = Handle(
             **validated_data,
             game_and_platform=GameAndPlatform.objects.get(
