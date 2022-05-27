@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "games",
     "handles",
     "kindles",
+    "keen"
 ]
 
 MIDDLEWARE = [
