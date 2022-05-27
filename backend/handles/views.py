@@ -1,6 +1,7 @@
 from .models import Handle
 from .serializers import HandleSerializer
 from rest_framework import viewsets
+from django.db import IntegrityError
 
 from .filters import HandleFilter
 from django_filters.rest_framework.backends import DjangoFilterBackend
@@ -39,3 +40,11 @@ class HandleViewSet(CreateListMixin, viewsets.ModelViewSet):
         except IntegrityError:
             content = {"name": ["A handle with that name already exists."]}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+
+class HandleByUserViewSet(HandleViewSet):
+    lookup_field = "user"
+
+    def get_queryset(self):
+        user = self.kwargs["user"]
+        return Handle.objects.filter(user__username=user)
