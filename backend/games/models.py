@@ -3,11 +3,11 @@ from django.db import models
 from functools import partial
 
 
-def rename_and_set_upload_path(name):
-    def _get_upload_to_path(instance, filename, name):
-        _, ext = os.path.splitext(filename)
+def _get_upload_to_path(instance, filename, name):
+    _, ext = os.path.splitext(filename)
+    return f"{instance.slug}/{name}{ext}"
 
-        return f"{instance.slug}/{name}{ext}"
+def rename_and_set_upload_path(name):
     return partial(_get_upload_to_path, name=name)
 
 class Game(models.Model):
