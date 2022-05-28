@@ -1,8 +1,8 @@
-import APIService from "~/modules/common/API";
-import { User, UserList } from "./User";
+import APIService from '~/modules/common/API';
+import { User, UserList } from './User';
 
 export class UserService extends APIService {
-  private url = "users/";
+  private url = 'users/';
 
   async list(): Promise<UserList> {
     const response = await this.client.get<UserList>(this.url);
