@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rekindled.converters import HashidsConverter
 
 from games.models import Game, GameAndPlatform, Platform
 from games.serializers import GameAndPlatformSerializer
@@ -20,6 +21,12 @@ class KindleBaseSerializer(serializers.ModelSerializer):
     source_handle = serializers.SlugRelatedField(
         slug_field="name", allow_null=False, read_only=True
     )
+    source_handle_id = serializers.PrimaryKeyRelatedField(
+        source="source_handle",
+        queryset=Handle.objects.all(),
+        write_only=True,
+        required=True,
+    )
 
     class Meta:
         model = BaseKindle
@@ -27,8 +34,24 @@ class KindleBaseSerializer(serializers.ModelSerializer):
         fields = [
             "source_user",
             "source_handle",
+            "source_handle_id",
             "message",
         ]
+
+    def to_internal_value(self, data):
+        try:
+            if source_handle_id := data.get("source_handle_id"):
+                data["source_handle_id"] = HashidsConverter.decode_id(source_handle_id)
+
+            if handle := data.get("handle_id"):
+                data["handle_id"] = HashidsConverter.decode_id(handle)
+
+            if source_user_id := data.get("source_user_id"):
+                data["source_user_id"] = HashidsConverter.decode_id(source_user_id)
+        except ValueError:
+            raise serializers.ValidationError({"detail": "Invalid id."})
+
+        return super().to_internal_value(data)
 
 
 class SeekingKindleSerializer(KindleBaseSerializer):
@@ -61,9 +84,9 @@ class SeekingKindleSerializer(KindleBaseSerializer):
 
 
 class DirectKindleSerializer(KindleBaseSerializer):
-    handle = serializers.SlugRelatedField(slug_field="name", read_only=True)
-    handle_id = serializers.PrimaryKeyRelatedField(
-        source="handle",
+    target_handle = serializers.SlugRelatedField(slug_field="name", read_only=True)
+    target_handle_id = serializers.PrimaryKeyRelatedField(
+        source="target_handle",
         queryset=Handle.objects.all(),
         write_only=True,
         required=True,
@@ -71,7 +94,7 @@ class DirectKindleSerializer(KindleBaseSerializer):
 
     class Meta:
         model = DirectKindle
-        fields = KindleBaseSerializer.Meta.fields + ["handle", "handle_id"]
+        fields = KindleBaseSerializer.Meta.fields + ["target_handle", "target_handle_id"]
 
     def create(self, validated_data):
         if "source_user" not in validated_data:

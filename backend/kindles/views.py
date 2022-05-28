@@ -13,7 +13,7 @@ class DirectKindleViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.select_related(
-            "source_user", "source_handle", "handle"
+            "source_user", "source_handle", "target_handle"
         ).filter(source_user=self.request.user)
 
 
