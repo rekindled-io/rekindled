@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -45,3 +46,20 @@ class CookieTokenRefreshView(TokenRefreshView):
             )
             del response.data["refresh"]
         return super().finalize_response(request, response, *args, **kwargs)
+
+
+class LogoutView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request, *args):
+        refresh_token_cookie = request.COOKIES.get("refresh_token")
+        try:
+            RefreshToken(refresh_token_cookie).blacklist()
+        except TokenError:
+            response = Response(status=status.HTTP_400_BAD_REQUEST)
+            response.delete_cookie("refresh_token")
+            response.delete_cookie("session-token")
+            return response
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
