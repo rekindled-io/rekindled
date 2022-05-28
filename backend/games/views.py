@@ -1,3 +1,6 @@
+from django.db.models.expressions import F, Window
+from django.db.models.functions.window import Rank
+
 from rest_framework import mixins, status, viewsets, generics
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter
@@ -11,6 +14,8 @@ from .models import Game, GameAndPlatform, Platform
 from .serializers import GameSerializer, GameSimplifiedSerializer, PlatformSerializer
 
 from .filters import GameFilter
+
+from datetime import timedelta, datetime
 
 
 class GameViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -44,6 +49,9 @@ class GameViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         )
 
         serializer = self.get_serializer(trending, many=True)
+
+        return Response(serializer.data, status.HTTP_200_OK)
+
 
 class PlatformViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Platform.objects.all()
