@@ -1,8 +1,11 @@
 <template>
   <div>
-    <Title title="Register" />
-    <div class="flex items-center justify-center mt-4">
+    <Heading content="Register" />
+    <div class="flex items-center justify-center mt-8">
       <div class="auth-form-box">
+        <div class="flex items-center justify-center mb-4 text-sm font-semibold text-gray-600">
+          Create an account and get started
+        </div>
         <div v-if="isAuthenticated">You are already registered ;)</div>
         <div v-else>
           <ValidationObserver ref="form" v-slot="{ invalid, handleSubmit }">
@@ -32,26 +35,13 @@
                 type="password"
                 required
               />
-              <FormInput
-                v-model="email"
-                rules="required|email"
-                label="Email"
-                name="email"
-                vid="email"
-                required
-              />
+              <FormInput v-model="email" rules="required|email" label="Email" name="email" vid="email" required />
               <Recaptcha />
-              <FormButton
-                text="Register"
-                :disabled="invalid"
-                :loading="loading"
-              />
+              <FormButton text="Register" :disabled="invalid" :loading="loading" />
             </form>
           </ValidationObserver>
           <p class="flex justify-end mt-5 text-xs text-gray-400">
-            <NuxtLink class="hover:underline hover:text-yellow-500" to="login"
-              >Already registered? Login here</NuxtLink
-            >
+            <NuxtLink class="hover:underline hover:text-yellow-500" to="login">Already registered? Login here</NuxtLink>
           </p>
         </div>
       </div>
@@ -60,40 +50,45 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import Vue from 'vue';
 
-export default {
+import { mapGetters } from 'vuex';
+
+export default Vue.extend({
   data() {
     return {
-      username: "",
-      password: "",
-      password_confirm: "",
-      email: "",
-      loading: false,
+      username: '',
+      password: '',
+      password_confirm: '',
+      email: '',
+      loading: false
     };
   },
+
   computed: {
-    ...mapGetters("auth", ["isAuthenticated"]),
+    ...mapGetters('auth', ['isAuthenticated'])
   },
+
   methods: {
     async register() {
       try {
         const captcha = await this.$recaptcha.getResponse();
         this.loading = true;
-        await this.$userService.create({
+        await this.$services.user.create({
           username: this.username,
           password: this.password,
           password_confirm: this.password_confirm,
           email: this.email,
-          captcha,
+          captcha
         });
         await this.$recaptcha.reset();
       } catch (e) {
+        console.log(e);
         this.$refs.form.setErrors(e.response.data);
       } finally {
         this.loading = false;
       }
-    },
-  },
-};
+    }
+  }
+});
 </script>

@@ -1,81 +1,87 @@
 <template>
   <div>
-    <Title title="Login" />
-    <div class="flex items-center justify-center mt-4">
+    <Heading content="Login" />
+    <div class="flex items-center justify-center mt-8">
       <div class="auth-form-box">
+        <div class="flex items-center justify-center mb-4 text-sm font-semibold text-gray-600">Welcome back!</div>
         <ValidationObserver ref="form" v-slot="{ invalid, handleSubmit }">
           <form class="space-y-8" @submit.prevent="handleSubmit(login)">
-            <FormInput
-              v-model="username"
-              required
-              rules="required"
-              label="Username"
-              name="username"
-            />
+            <FormInput v-model="username" rules="required" label="Username" name="username" vid="detail" required />
             <FormInput
               v-model="password"
-              required
               rules="required"
               label="Password"
               name="password"
               type="password"
+              vid="detail"
+              required
             />
             <FormButton text="Login" :disabled="invalid" :loading="loading" />
           </form>
         </ValidationObserver>
-        <p class="flex justify-end mt-5 space-x-1 text-xs text-gray-400">
-          <NuxtLink
-            class="hover:underline hover:text-yellow-500"
-            to="reset-password"
-            >Forgot your password?</NuxtLink
-          >
+        <hr class="my-4" />
+        <p class="flex justify-end space-x-1 text-xs text-gray-400">
+          <NuxtLink class="font-semibold hover:underline hover:text-yellow-500" to="reset-password">
+            Forgot your password?
+          </NuxtLink>
           <span>|</span>
-          <NuxtLink class="hover:underline hover:text-yellow-500" to="register"
-            >Sign up</NuxtLink
-          >
+          <NuxtLink class="font-semibold hover:underline hover:text-yellow-500" to="register">Sign up</NuxtLink>
         </p>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import Vue from "vue";
-import { mapGetters } from "vuex";
+<script lang="ts">
+import Vue from 'vue';
+import { mapGetters } from 'vuex';
+
+import { VeeValidate } from '~/types';
 
 export default Vue.extend({
   middleware({ store, redirect }) {
-    const isLoggedIn = store.getters["auth/isAuthenticated"];
+    const isLoggedIn = store.getters['auth/isAuthenticated'];
     if (isLoggedIn) {
-      return redirect("/");
+      return redirect('/');
     }
   },
+
   data() {
     return {
-      username: "",
-      password: "",
-      loading: false,
+      username: '',
+      password: '',
+      loading: false
     };
   },
+
   computed: {
-    ...mapGetters("auth", ["isAuthenticated"]),
+    ...mapGetters('auth', ['isAuthenticated']),
+    form(): VeeValidate {
+      return this.$refs.form as VeeValidate;
+    }
   },
+
   methods: {
     async login() {
+      const { dispatch } = this.$store;
+
       try {
         this.loading = true;
-        await this.$store.dispatch("auth/login", {
+        await this.$store.dispatch('auth/login', {
           username: this.username,
-          password: this.password,
+          password: this.password
         });
-        const response = await this.$axios.get("/users/me/");
-        localStorage.setItem("user", JSON.stringify(response.data));
-        this.$router.push("/dashboard/");
-      } catch (e) {
-        this.$refs.form.setErrors(e.response.data);
+
+        const response = await this.$axios.get('/users/me/');
+
+        localStorage.setItem('user', JSON.stringify(response.data));
+        this.$router.push('/dashboard/');
+      } catch (error: any) {
+        dispatch('toast/error', error.message);
+      } finally {
         this.loading = false;
       }
-    },
-  },
+    }
+  }
 });
 </script>
