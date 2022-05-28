@@ -1,5 +1,5 @@
 export default function ({ store, app: { $axios }, redirect }) {
-  const IGNORED_PATHS = ['/auth/token/', '/auth/token/refresh/', '/games/', '/platforms/'];
+  const IGNORED_PATHS = ['/auth/token/', '/auth/token/refresh/', '/games/', '/platforms/', 'search'];
 
   $axios.onRequest((request) => {
     const isIgnored = IGNORED_PATHS.some((path) => request.url.includes(path));
@@ -10,7 +10,7 @@ export default function ({ store, app: { $axios }, redirect }) {
   });
 
   $axios.onError((error) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const isIgnored = IGNORED_PATHS.some((path) => error.config.url.includes(path));
 
       const code = parseInt(error.response && error.response.status);
@@ -20,22 +20,24 @@ export default function ({ store, app: { $axios }, redirect }) {
 
         if (code === 'token_not_valid') {
           if (error.config.hasOwnProperty('retryAttempts')) {
-            store.dispatch('auth/logout');
+            await store.dispatch('auth/logout');
 
-            return redirect('/login/');
+            return redirect('/');
           } else {
-            try {
-              store.dispatch('auth/refresh');
+            const config = { retryAttempts: 1, ...error.config };
 
-              return resolve($axios);
+            try {
+              await store.dispatch('auth/refresh');
+
+              return resolve($axios(config));
             } catch (e) {
-              store.dispatch('auth/logout');
+              await store.dispatch('auth/logout');
 
               return redirect('/');
             }
           }
         } else {
-          store.dispatch('auth/logout');
+          await store.dispatch('auth/logout');
 
           return redirect('/');
         }
