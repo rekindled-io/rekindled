@@ -1,10 +1,10 @@
 <template>
-  <span
-    class="px-2 py-1 text-xs font-semibold tracking-wide bg-transparent border rounded whitespace-nowrap"
+  <div
+    class="px-2 py-1 text-xs font-semibold tracking-wide bg-transparent border rounded overflow-hidden whitespace-nowrap"
     :class="klass"
   >
     {{ name }}
-  </span>
+  </div>
 </template>
 <script>
 export default {
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style scoped>
-span[class*='platform--'] {
+div[class*='platform--'] {
   @apply text-gray-100 border-none;
 }
 .platform--pc {
