@@ -1,17 +1,18 @@
 <template>
   <button
     type="submit"
-    class="flex justify-center primary-button w-full items-center leading-6 min-h-max"
+    class="flex items-center justify-center w-full leading-6 primary-button min-h-max"
     :disabled="disableButton"
     :class="[!disableButton ? 'cursor-pointer' : 'button-disabled']"
   >
-    <Icon v-if="loading" name="spinner" class="animate-spin h-6 w-6 text-yellow-400" />
+    <Icon v-if="loading" name="spinner" class="w-6 h-6 text-yellow-400 animate-spin" />
     <span v-else>{{ text }}</span>
   </button>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+
 export default Vue.extend({
   props: {
     text: {
@@ -31,6 +32,7 @@ export default Vue.extend({
       default: ''
     }
   },
+
   computed: {
     disableButton() {
       return this.disabled || this.loading;

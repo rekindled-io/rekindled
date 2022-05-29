@@ -1,14 +1,25 @@
 <template>
   <ValidationProvider v-slot="{ errors, classes }" tag="div" slim :rules="rules" :vid="vid">
-    <div class="group relative">
-      <Icon v-if="icon" class="absolute h-6 w-6 inset-y-0 pointer-events-none" :name="icon" />
+    <div class="relative">
+      <Icon v-if="icon" class="absolute inset-y-0 w-6 h-6 pointer-events-none" :name="icon" />
+      <label
+        class="text-sm font-semibold pointer-events-none"
+        :for="name"
+        :class="{
+          'text-gray-400': !errors[0],
+          'text-red-600': errors[0],
+          'pl-6': icon
+        }"
+      >
+        {{ label }}
+      </label>
       <input
         v-model="innerValue"
         :name="name"
         :type="type"
         :label="label"
         :required="required"
-        class="w-full text-gray-800 bg-transparent border-b-2 px-1 py-0.5 font-bold text-sm outline-none transition duration-300 ease-in-out"
+        class="w-full text-gray-800 bg-transparent border-b-2 px-1 py-0.5 font-bold text-sm outline-none"
         :class="{
           'border-red-600 placeholder-red-600': errors[0],
           'has-value': hasValue,
@@ -17,26 +28,15 @@
           'pl-7': icon
         }"
       />
-      <label
-        class="absolute transition-all transform duration-300 left-1 top-0.5 font-semibold pointer-events-none text-sm group-focus-within:text-xs group-focus-within:-translate-y-full group-focus-within:text-gray-800 group-focus-within:opacity-0"
-        :for="name"
-        :class="{
-          'text-gray-400': !errors[0],
-          'text-red-600': errors[0],
-          'text-xs -translate-y-full opacity-0': hasValue,
-          'pl-6': icon
-        }"
-      >
-        {{ label }}
-        <span class="text-red-400">{{ required ? '•' : '' }}</span>
-      </label>
-      <span v-if="errors[0]" class="block text-red-600 text-xs absolute" :class="classes">{{ errors[0] }}</span>
+      <span v-if="errors[0]" class="absolute block text-xs text-red-600" :class="classes">{{ errors[0] }}</span>
     </div>
   </ValidationProvider>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   props: {
     required: {
       type: Boolean,
@@ -69,7 +69,7 @@ export default {
       default: undefined
     },
     value: {
-      type: null,
+      type: String,
       default: ''
     },
     hover: {
@@ -85,9 +85,11 @@ export default {
       default: ''
     }
   },
+
   data: () => ({
     innerValue: ''
   }),
+
   computed: {
     hasValue() {
       return !!this.innerValue;
@@ -98,22 +100,11 @@ export default {
       };
     }
   },
+
   watch: {
     innerValue(value) {
       this.$emit('input', value);
     }
   }
-};
+});
 </script>
-<style lang="scss" scoped>
-.TextInput {
-  label {
-    margin-top: 1rem;
-  }
-
-  input.has-value ~ label,
-  input:focus ~ label {
-    @apply transition ease-in-out duration-300 -translate-y-5;
-  }
-}
-</style>
