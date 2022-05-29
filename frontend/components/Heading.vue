@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-yellow-400">
-    <div class="max-w-5xl mx-auto py-8 px-4">
-      <span class="bg-black text-white text-2xl font-semibold px-2 py-3 rounded">{{ content }}</span>
+  <div class="bg-yellow-300 shadow-xl">
+    <div class="max-w-5xl px-4 mx-auto py-7">
+      <span class="bg-black text-white text-2xl font-semibold px-2 py-1.5 rounded">{{ content }}</span>
     </div>
   </div>
 </template>
