@@ -9,7 +9,7 @@ export default ({ store }) => {
       getItem: (key) => {
         return Cookies.get(key);
       },
-      setItem: (key, value) => Cookies.set(key, value, { sameSite: 'lax', secure: false }),
+      setItem: (key, value) => Cookies.set(key, value, { sameSite: 'strict', secure: false }),
       removeItem: (key) => Cookies.remove(key)
     }
   })(store);
