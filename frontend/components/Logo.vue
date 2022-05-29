@@ -1,7 +1,7 @@
 <template>
   <NuxtLink to="/">
-    <div class="flex items-center py-1 px-3 rounded-lg text-white bg-yellow-300">
-      <Icon class="text-white" name="logo" />
+    <div class="py-1 px-3 rounded-lg bg-gray-300 hover:bg-yellow-400">
+      <Icon name="logo" />
     </div>
   </NuxtLink>
 </template>
