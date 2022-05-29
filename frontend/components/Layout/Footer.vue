@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-800 text-gray-300">
-    <div class="max-w-screen-xl mx-auto py-4 px-4">rekindled</div>
+  <div class="bg-gray-200 border-t border-gray-400">
+    <div class="max-w-screen-xl px-4 py-4 text-sm text-gray-700">© 2022 rekindled.io</div>
   </div>
 </template>
