@@ -1,27 +1,27 @@
 <template>
-  <div class="flex justify-between items-center">
-    <button
-      class="h-11 w-10 rounded-lg font-bold bg-yellow-300"
+  <div class="flex items-center justify-between space-x-4">
+    <FormButton
+      class="w-10 font-bold bg-yellow-300 rounded-lg h-11"
       :disabled="previous == null"
+      text="←"
       v-bind:class="[previous ? 'cursor-pointer' : 'disabled:cursor-not-allowed bg-yellow-100 text-gray-400']"
       @click="switchPage(previous)"
-    >
-      ←
-    </button>
-    <span class="text-sm" v-if="current_page < last_page">Pg. {{ current_page }} of {{ last_page }}</span>
-    <button
-      class="h-11 w-10 rounded-lg font-bold bg-yellow-300"
+    />
+    <span class="text-xs font-semibold" v-if="current_page < last_page">{{ current_page }} of {{ last_page }}</span>
+    <FormButton
+      class="w-10 font-bold bg-yellow-300 rounded-lg h-11"
       :disabled="next == null"
+      text="→"
       v-bind:class="[next ? 'cursor-pointer' : 'disabled:cursor-not-allowed bg-yellow-100 text-gray-400']"
       @click="switchPage(next)"
-    >
-      →
-    </button>
+    />
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   props: {
     next: {
       type: Number
@@ -33,12 +33,12 @@ export default {
     last_page: { type: Number }
   },
   methods: {
-    switchPage(page) {
+    switchPage(page: null | string) {
       if (page == null) {
         return;
       }
       this.$router.push({ query: { ...this.$route.query, page: page } });
     }
   }
-};
+});
 </script>
