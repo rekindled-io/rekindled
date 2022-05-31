@@ -61,6 +61,8 @@ import Vue, { PropType } from 'vue';
 import { Handle, HandleList } from '~/modules/handle/Handle';
 import { VeeValidate } from '~/types';
 
+import { buildURLQuery } from '@/utils/filters';
+
 export default Vue.extend({
   props: {
     open: {
@@ -76,6 +78,12 @@ export default Vue.extend({
   computed: {
     ref(): VeeValidate {
       return this.$refs.form as VeeValidate;
+    },
+    query() {
+      return buildURLQuery({
+        user: JSON.parse(localStorage.getItem('user') || '')?.username,
+        includeSelf: false
+      });
     }
   },
 
@@ -101,7 +109,6 @@ export default Vue.extend({
         handle_id: this.data.id,
         message: this.form.message
       };
-      console.log(payload);
 
       try {
         await this.$axios.$post('/kindles/direct/', payload);
@@ -116,8 +123,7 @@ export default Vue.extend({
   },
 
   async fetch() {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    this.handles = await this.$axios.$get(`/handles/user/${user.username}/`);
+    this.handles = await this.$services.handle.list(this.query);
   }
 });
 </script>
