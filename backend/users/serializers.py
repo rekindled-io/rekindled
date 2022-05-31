@@ -16,7 +16,14 @@ User = get_user_model()
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ["bio", "location"]
+        fields = [
+            "bio",
+            "location",
+            "discord_name",
+            "discord_account_number",
+            "discord_id",
+            "steam_id"
+        ]
 
 
 class UserSerializer(serializers.ModelSerializer):
