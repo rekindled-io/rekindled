@@ -1,5 +1,10 @@
 export interface IProfileData {
   bio: string;
+  location: string;
+  discord_name: string;
+  discord_account_number: Number;
+  discord_id: string;
+  steam_id: string;
 }
 
 export interface IUserData {
@@ -13,4 +18,6 @@ export interface IUserData {
   hashed_email: string;
 }
 
-export interface IUser extends IUserData {}
+export interface IUser extends IUserData {
+  hasDiscord(): boolean;
+}

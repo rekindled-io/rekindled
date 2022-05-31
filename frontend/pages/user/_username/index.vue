@@ -1,23 +1,25 @@
 <template>
   <div>
-    <div class="justify-center w-full p-4 py-5 bg-yellow-300">
+    <div class="justify-center w-full p-4 py-5 bg-yellow-300 shadow-xl">
       <div class="relative flex items-center max-w-6xl mx-auto">
         <Gravatar class="object-cover w-16 h-16 rounded-full" :email="user.hashed_email" :size="80" />
         <div class="ml-4">
           <div class="flex my-1">
-            <span class="px-3 py-2 text-2xl font-bold text-white bg-black rounded">
+            <span class="px-2 py-1.5 text-2xl font-semibold text-white bg-black rounded">
               {{ user.username }}
             </span>
           </div>
           <div class="flex my-1">
             <span class="px-2 py-1 text-xs text-gray-800 bg-white rounded">
-              <span class="font-semibold">Last online</span> {{ user.last_login | formatDate }}</span
-            >
+              <span class="font-semibold">Last online</span>
+              <span v-if="user.last_login">{{ user.last_login | formatDate }}</span>
+              <span v-else>Never</span>
+            </span>
           </div>
         </div>
       </div>
     </div>
-    <div class="justify-center w-3/5 mx-auto mt-5">
+    <div class="justify-center w-3/5 mx-auto mt-12">
       <div class="flex space-x-4">
         <div class="w-1/4">
           <div class="mb-0.5">
@@ -32,13 +34,13 @@
           <div class="mb-0.5">
             <span class="text-xl font-semibold">IDs</span>
             <div class="flex flex-col">
-              <div>
+              <div v-if="user.hasDiscord()">
                 <label class="text-xs text-gray-600" for="discord">Discord</label>
                 <input
                   class="text-sm bg-transparent rounded bg-gray-100 text-gray-500 px-1 py-0.5 focus:outline-none"
                   name="discord"
                   type="text"
-                  value="guy#2021"
+                  :value="user.discordUser()"
                   readonly
                 />
               </div>
@@ -57,10 +59,10 @@
           <div class="mb-0.5">
             <span class="text-xl font-semibold">Links</span>
             <p class="flex space-x-2">
-              <a href="https://discordapp.com/users/302050872383242240" target="_blank">
+              <a :href="this.user.discordLink()" target="_blank">
                 <Icon class="w-5 h-5" name="discord" />
               </a>
-              <a href="https://steamcommunity.com/profiles/76561197963357279" target="_blank">
+              <a :href="this.user.steamLink()" target="_blank">
                 <Icon class="w-5 h-5" name="steam" />
               </a>
             </p>
@@ -68,7 +70,7 @@
         </div>
         <Loading v-if="$fetchState.pending" />
         <div v-else-if="$fetchState.error" class="w-1/2 mx-auto text-2xl text-center">Uh oh! Something went wrong.</div>
-        <div v-else-if="!handles.count">
+        <div class="w-full" v-else-if="!handles.count">
           <Message text="User has not created any handles yet." />
         </div>
         <div class="w-full" v-else>
@@ -102,9 +104,9 @@ export default {
       return `${date.getDate()} ${month} ${date.getFullYear()}`;
     }
   },
-  async asyncData({ $axios, error, params }) {
+  async asyncData({ $services, error, params }) {
     try {
-      const user = await $axios.$get(`/users/${params.username}/`);
+      const user = await $services.user.retrieve(params.username);
       return { user };
     } catch (e) {
       error({ statusCode: 404, message: e });
@@ -116,7 +118,8 @@ export default {
     };
   },
   async fetch() {
-    this.handles = await this.$axios.$get(`/handles/user/${this.$route.params.username}/`);
+    const user = this.$route.params.username;
+    this.handles = await this.$services.handle.list(`user=${user}`);
   }
 };
 </script>

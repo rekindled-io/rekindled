@@ -1,5 +1,5 @@
-import { IPagination } from "~/modules/common/Pagination";
-import { IProfileData, IUser, IUserData } from "./User.types";
+import { IPagination } from '~/modules/common/Pagination';
+import { IProfileData, IUser, IUserData } from './User.types';
 
 export class User implements IUser {
   username: string;
@@ -20,6 +20,22 @@ export class User implements IUser {
     this.hashed_email = data.hashed_email;
     this.is_true = data.is_true;
     this.profile = data.profile;
+  }
+
+  hasDiscord() {
+    return this.profile.discord_name && this.profile.discord_account_number ? true : false;
+  }
+
+  discordUser() {
+    return `${this.profile.discord_name}#${this.profile.discord_account_number}`;
+  }
+
+  discordLink() {
+    return `https://discordapp.com/users/${this.profile.discord_id}/`;
+  }
+
+  steamLink() {
+    return `https://steamcommunity.com/profiles/${this.profile.steam_id}/`;
   }
 }
 
