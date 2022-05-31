@@ -65,19 +65,6 @@ import { buildURLQuery } from '@/utils/filters';
 import { Handle } from '~/modules/handle/Handle';
 
 export default Vue.extend({
-  computed: {
-    page() {
-      return this.$route.query.page || 1;
-    },
-    query(): string {
-      return buildURLQuery({
-        name: this.search.name || '',
-        page: this.page,
-        ordering: this.search.ordering
-      });
-    }
-  },
-
   data() {
     return {
       data: [],
@@ -116,9 +103,23 @@ export default Vue.extend({
     }
   },
 
+  computed: {
+    page() {
+      return this.$route.query.page || 1;
+    },
+    query(): string {
+      return buildURLQuery({
+        name: this.search.name || '',
+        page: this.page,
+        ordering: this.search.ordering,
+        includeSelf: true,
+        user: JSON.parse(localStorage.getItem('user') || '')?.username
+      });
+    }
+  },
+
   async fetch() {
-    const user = JSON.parse(localStorage.getItem('user') || '');
-    this.handles = await this.$services.handle.listByUser(user.username, this.query);
+    this.handles = await this.$services.handle.list(this.query);
   },
 
   watch: {

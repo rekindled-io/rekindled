@@ -1,7 +1,9 @@
 from .models import Handle
 from .serializers import HandleSerializer
-from rest_framework import viewsets
+from rest_framework import viewsets, status, mixins
 from django.db import IntegrityError
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from .filters import HandleFilter
 from django_filters.rest_framework.backends import DjangoFilterBackend
@@ -29,7 +31,7 @@ class HandleViewSet(CreateListMixin, viewsets.ModelViewSet):
         )
 
         # Don't return user's own handles in results
-        if self.request.user.is_authenticated and self.action == "list":
+        if self.request.user.is_authenticated and not self.request.query_params.get("includeSelf"):
             qs = qs.exclude(user=self.request.user)
 
         return qs
@@ -41,10 +43,10 @@ class HandleViewSet(CreateListMixin, viewsets.ModelViewSet):
             content = {"name": ["A handle with that name already exists."]}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=["get"], )
+    def recent(self, request):
+        qs = self.get_queryset().order_by("created")
+        filtered_qs = self.filter_queryset(qs)[:5]
+        serializer = self.get_serializer(filtered_qs, many=True)
 
-class HandleByUserViewSet(HandleViewSet):
-    lookup_field = "user"
-
-    def get_queryset(self):
-        user = self.kwargs["user"]
-        return Handle.objects.filter(user__username=user)
+        return Response(serializer.data, status.HTTP_200_OK)

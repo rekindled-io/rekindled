@@ -50,7 +50,8 @@ export default Vue.extend({
         name: this.$route.query.name || '',
         game: this.$route.query.game || '',
         platform: this.$route.query.platform || '',
-        page: this.$route.query.page || 1
+        page: this.$route.query.page || 1,
+        includeSelf: false
       });
     }
   },

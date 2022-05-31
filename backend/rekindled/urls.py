@@ -23,7 +23,6 @@ urlpatterns = [
     path("", include(router.urls)),
     path("admin/", admin.site.urls),
     path("", include("users.urls")),
-    path("", include("handles.urls")),
 ] + TokenURL
 
 if settings.DEBUG:

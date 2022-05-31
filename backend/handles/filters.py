@@ -3,9 +3,12 @@ from django_filters import rest_framework as filters
 from games.models import Game, Platform
 
 from .models import Handle
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class HandleFilter(filters.FilterSet):
+    user = filters.ModelChoiceFilter(queryset=User.objects.all(), field_name='user', to_field_name="username")
     name = filters.CharFilter(field_name="name", lookup_expr="icontains")
     game = filters.ModelMultipleChoiceFilter(
         field_name="game_and_platform__game__name",
