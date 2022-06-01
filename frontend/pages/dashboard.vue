@@ -1,12 +1,12 @@
 <template>
   <div>
     <Heading content="Dashboard" />
-    <div class="mx-auto justify-center w-3/5 bg-white my-12 border-2 border-black rounded">
+    <div class="w-3/5 mx-auto my-12 bg-white border-2 border-black rounded">
       <nav class="flex flex-col sm:flex-row">
         <Tab class="rounded-tl" name="Overview" link="/dashboard/" />
-        <LazyTab name="Handles" link="/dashboard/handles/" />
-        <LazyTab name="Kindles" link="/dashboard/kindles/" />
-        <LazyTab class="rounded-tr" name="Notifications" link="/dashboard/notifications/" />
+        <Tab name="Handles" link="/dashboard/handles/" />
+        <Tab name="Kindles" link="/dashboard/kindles/" />
+        <Tab class="rounded-tr" name="Notifications" link="/dashboard/notifications/" />
       </nav>
       <NuxtChild keep-alive />
     </div>
