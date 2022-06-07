@@ -43,8 +43,8 @@ class KindleBaseSerializer(serializers.ModelSerializer):
             if source_handle_id := data.get("source_handle_id"):
                 data["source_handle_id"] = HashidsConverter.decode_id(source_handle_id)
 
-            if handle := data.get("handle_id"):
-                data["handle_id"] = HashidsConverter.decode_id(handle)
+            if target_handle := data.get("target_handle_id"):
+                data["target_handle_id"] = HashidsConverter.decode_id(target_handle)
 
             if source_user_id := data.get("source_user_id"):
                 data["source_user_id"] = HashidsConverter.decode_id(source_user_id)
@@ -59,7 +59,7 @@ class SeekingKindleSerializer(KindleBaseSerializer):
 
     class Meta:
         model = SeekingKindle
-        fields = KindleBaseSerializer.Meta.fields + ["handle", "game_and_platform"]
+        fields = KindleBaseSerializer.Meta.fields + ["target_handle", "game_and_platform"]
 
     def create(self, validated_data):
         instance = None
