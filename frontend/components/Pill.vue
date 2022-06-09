@@ -1,10 +1,10 @@
 <template>
-  <div
-    class="px-2 py-1 text-xs font-semibold tracking-wide bg-transparent border rounded overflow-hidden whitespace-nowrap"
+  <span
+    class="px-1.5 py-0.5 overflow-hidden text-xs font-semibold tracking-wide bg-transparent border rounded whitespace-nowrap inline-flex"
     :class="klass"
   >
     {{ name }}
-  </div>
+  </span>
 </template>
 <script>
 export default {
@@ -13,14 +13,15 @@ export default {
       required: true
     }
   },
+
   computed: {
     klass() {
       return {
-        'platform--pc': this.name == 'PC',
-        'platform--xbox': this.name == 'Xbox Network',
-        'platform--steam': this.name == 'Steam',
-        'platform--playstation': this.name == 'Playstation Network',
-        'platform--nintendo': this.name == 'Nintendo Network'
+        'platform--pc': ['PC'].includes(this.name),
+        'platform--xbox': ['Xbox Network', 'XBL'].includes(this.name),
+        'platform--steam': ['Steam', 'ST'].includes(this.name),
+        'platform--playstation': ['Playstation Network', 'PSN'].includes(this.name),
+        'platform--nintendo': ['Nintendo Network', 'NN'].includes(this.name)
       };
     }
   }
@@ -28,7 +29,7 @@ export default {
 </script>
 
 <style scoped>
-div[class*='platform--'] {
+span[class*='platform--'] {
   @apply text-gray-100 border-none;
 }
 .platform--pc {
