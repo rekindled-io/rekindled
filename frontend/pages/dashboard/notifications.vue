@@ -3,11 +3,11 @@
     <div v-if="$fetchState.pending">
       <Loading />
     </div>
-    <div class="mx-auto my-4 text-center font-semibold py-2" v-else-if="!this.notifications.count">
+    <div class="py-2 mx-auto my-4 font-semibold text-center" v-else-if="!this.notifications.count">
       <span class="text-xl font-semibold">You have no notifications.</span>
     </div>
     <table v-else class="min-w-full mt-5">
-      <thead class="border-t-2 border-b-2 bg-gray-100 text-gray-600 text-xs font-medium uppercase">
+      <thead class="text-xs font-medium text-gray-600 uppercase bg-gray-100 border-t-2 border-b-2">
         <tr>
           <th class="py-4 text-center">Subject</th>
           <th class="py-4 text-center">Message</th>
@@ -23,7 +23,7 @@
           :class="[notification.unread ? 'bg-white border-l-4 border-yellow-500' : 'bg-gray-50']"
         >
           <td class="px-6 py-4 border-b border-1">
-            <div class="flex align-items-center box-border">
+            <div class="box-border flex align-items-center">
               <div class="text-sm" :class="[notification.unread ? 'font-bold ' : 'text-gray-500']">
                 <span class="font-bold">{{ notification.sender.user }}</span> from
                 <span class="font-bold">
@@ -52,12 +52,12 @@
             {{ notification.timestamp }}
           </td>
           <td class="text-center border-b border-1">
-            <a class="text-gray-500 ml-2 hover:bg-gray-200 px-3 py-2 rounded cursor-pointer">
+            <a class="px-3 py-2 ml-2 text-gray-500 rounded cursor-pointer hover:bg-gray-200">
               <NuxtLink to="/user/asdfgh">
                 <span class="text-base">view</span>
               </NuxtLink>
             </a>
-            <a class="text-red-500 ml-2 hover:bg-gray-200 px-3 py-2 rounded cursor-pointer">
+            <a class="px-3 py-2 ml-2 text-red-500 rounded cursor-pointer hover:bg-gray-200">
               <span class="text-base">delete</span>
             </a>
           </td>
@@ -67,15 +67,14 @@
   </div>
 </template>
 <script>
-import '@/plugins/truncate'
 export default {
   data() {
     return {
       notifications: []
-    }
+    };
   },
   async fetch() {
-    this.notifications = await this.$axios.$get(`/notifications/`)
+    this.notifications = await this.$axios.$get(`/notifications/`);
   }
-}
+};
 </script>

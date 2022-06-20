@@ -4,17 +4,13 @@
     <div class="justify-center w-3/5 p-4 mx-auto my-8">
       <div class="flex space-x-4">
         <div class="w-1/5 p-4">User Settings</div>
-        <div class="w-full p-4 bg-white rounded-lg">
+        <div class="w-full p-4 bg-white border-2 border-black rounded">
           <span class="text-xl font-bold">User</span>
           <hr class="my-2" />
           <ValidationObserver ref="form" v-slot="{ invalid, handleSubmit }">
             <form class="space-y-4" @submit.prevent="handleSubmit(save)">
-              <div class="my-4">
-                <FormInput v-model="form.email" rules="required|max:32|email" name="email" label="Email" hover />
-              </div>
-              <div class="my-4">
-                <FormInput v-model="form.location" rules="max:32" name="location" label="Location" hover />
-              </div>
+              <FormInput v-model="form.email" rules="required|max:32|email" name="email" label="Email" hover />
+              <FormInput v-model="form.location" rules="max:32" name="location" label="Location" hover />
               <div>
                 <label class="block text-sm font-bold text-gray-800" for="bio">Bio</label>
                 <textarea

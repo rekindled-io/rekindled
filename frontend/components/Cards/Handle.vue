@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col bg-gray-300 rounded-md">
-    <div class="relative bg-white border-2 border-gray-600 rounded -top-1 -left-1">
+    <div
+      class="relative transition duration-500 transform bg-white border-2 border-gray-600 rounded -top-1 -left-1 hover:-translate-y-1"
+    >
       <div
         class="h-12 bg-black rounded-t-sm"
         style="background-size: cover; background-repeat: no-repeat; background-position: center"
@@ -11,14 +13,14 @@
         <div class="flex">
           <img
             :src="$config.baseURL + data.game_and_platform.icon"
-            class="h-12 bg-white border-4 border-gray-100 rounded-full -mt-7"
+            class="h-12 bg-white border-4 rounded-full border-gray-50 -mt-7"
           />
         </div>
 
         <div class="flex justify-between items-center my-0.5">
           <div class="flex space-x-1">
             <Pill :name="data.game_and_platform['game_name']" />
-            <Pill :name="data.game_and_platform['platform_name']" />
+            <Pill :name="data.game_and_platform['platform_abbreviation']" />
           </div>
           <Pill :name="data.region" />
         </div>
@@ -26,7 +28,7 @@
         <hr class="my-2" />
 
         <div class="flex items-center justify-between">
-          <div class="z-10 overflow-hidden">
+          <div class="z-10 overflow-x-hidden">
             <tippy v-if="data.name.length > 16" :content="data.name" arrow>
               <template #trigger>
                 <h3 class="text-lg font-black text-gray-700">
@@ -42,7 +44,7 @@
           </div>
 
           <div class="flex flex-row space-x-2">
-            <NuxtLink :to="`/user/${data.user}`" v-if="showUserLink">
+            <NuxtLink :to="`/user/${data.user}`" v-if="showProfileLink">
               <Icon
                 class="w-6 h-6 p-1 bg-gray-200 rounded-full hover:bg-yellow-300"
                 name="user"
@@ -78,7 +80,7 @@ export default Vue.extend({
       type: Object as PropType<Handle>,
       required: true
     },
-    showUserLink: {
+    showProfileLink: {
       type: Boolean,
       required: false,
       default: false

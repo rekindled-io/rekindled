@@ -28,7 +28,7 @@
               <span class="text-sm" v-if="user.profile.bio">
                 {{ user.profile.bio }}
               </span>
-              <span class="text-sm italic" v-else>{{ user.username }} hasn't written anything about themselves.</span>
+              <span class="text-sm italic" v-else>{{ user.username }} hasn't written anything about themself.</span>
             </p>
           </div>
           <div class="mb-0.5">
@@ -93,33 +93,41 @@
   </div>
 </template>
 
-<script>
-export default {
-  filters: {
-    formatDate(value) {
-      if (!value) return '';
-      const date = new Date(value);
-      const month = date.toLocaleString('default', { month: 'short' });
+<script lang="ts">
+import Vue from 'vue';
+import { HandleList } from '~/modules/handle/Handle';
+import { buildURLQuery } from '~/utils/filters';
 
-      return `${date.getDate()} ${month} ${date.getFullYear()}`;
-    }
-  },
+export default Vue.extend({
   async asyncData({ $services, error, params }) {
     try {
       const user = await $services.user.retrieve(params.username);
       return { user };
     } catch (e) {
-      error({ statusCode: 404, message: e });
+      error({ statusCode: 404, message: e as string });
     }
   },
+
   data() {
     return {
-      handles: []
+      handles: {} as HandleList
     };
   },
+
+  computed: {
+    page() {
+      return this.$route.query.page || 1;
+    },
+    query(): string {
+      return buildURLQuery({
+        includeSelf: true,
+        user: this.$route.params.username
+      });
+    }
+  },
+
   async fetch() {
-    const user = this.$route.params.username;
-    this.handles = await this.$services.handle.list(`user=${user}`);
+    this.handles = await this.$services.handle.list(this.query);
   }
-};
+});
 </script>

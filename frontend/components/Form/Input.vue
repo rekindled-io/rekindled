@@ -23,12 +23,12 @@
         :class="{
           'border-red-600 placeholder-red-600': errors[0],
           'has-value': hasValue,
-          'focus:border-yellow-400': hover,
+          'focus:border-yellow-400 transition duration-300': hover,
           // Probably should convert below to calculated offset value
           'pl-7': icon
         }"
       />
-      <span v-if="errors[0]" class="absolute block text-xs text-red-600" :class="classes">{{ errors[0] }}</span>
+      <span v-if="errors[0]" class="absolute block mt-1 text-xs text-red-600" :class="classes">{{ errors[0] }}</span>
     </div>
   </ValidationProvider>
 </template>
@@ -102,7 +102,7 @@ export default Vue.extend({
   },
 
   watch: {
-    innerValue(value) {
+    innerValue(value: string) {
       this.$emit('input', value);
     }
   }

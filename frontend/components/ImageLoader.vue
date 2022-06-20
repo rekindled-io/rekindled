@@ -1,7 +1,7 @@
 <template>
   <div>
     <img v-if="imageLoaded" :src="this.image.src" :class="imageClass" />
-    <div v-else class="h-48 w-48">
+    <div v-else class="w-48 h-48">
       <Loading />
     </div>
   </div>

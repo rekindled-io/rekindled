@@ -1,6 +1,6 @@
 <template>
-  <nav class="top-0 w-full z-50 bg-[#061028]">
-    <div class="max-w-6xl py-4 mx-auto">
+  <header class="fixed top-0 w-full z-50 bg-[#061028] py-2 h-18">
+    <div class="max-w-6xl mx-auto">
       <div class="flex items-center justify-between">
         <div class="flex flex-col items-center font-semibold">
           <Logo />
@@ -40,7 +40,7 @@
         </div>
       </div>
     </div>
-  </nav>
+  </header>
 </template>
 
 <script lang="ts">
@@ -70,7 +70,9 @@ export default Vue.extend({
       this.$router.push({
         path: '/search',
         query: {
-          name: this.handleFilter
+          name: this.handleFilter,
+          game: this.$route.query.game || '',
+          platform: this.$route.query.platform || ''
         }
       });
     }

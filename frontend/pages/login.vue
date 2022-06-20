@@ -6,7 +6,15 @@
         <div class="flex items-center justify-center mb-4 text-sm font-semibold text-gray-600">Welcome back!</div>
         <ValidationObserver ref="form" v-slot="{ invalid, handleSubmit }">
           <form class="space-y-8" @submit.prevent="handleSubmit(login)">
-            <FormInput v-model="username" rules="required" label="Username" name="username" vid="detail" required />
+            <FormInput
+              v-model="username"
+              rules="required"
+              label="Username"
+              name="username"
+              vid="detail"
+              required
+              hover
+            />
             <FormInput
               v-model="password"
               rules="required"
@@ -15,6 +23,7 @@
               type="password"
               vid="detail"
               required
+              hover
             />
             <FormButton text="Login" :disabled="invalid" :loading="loading" />
           </form>
@@ -77,7 +86,7 @@ export default Vue.extend({
         localStorage.setItem('user', JSON.stringify(response.data));
         this.$router.push('/dashboard/');
       } catch (error: any) {
-        dispatch('toast/error', error.message);
+        dispatch('toast/error', error.response.data.detail);
       } finally {
         this.loading = false;
       }

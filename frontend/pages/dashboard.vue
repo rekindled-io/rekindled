@@ -17,7 +17,12 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  middleware: 'auth'
+  middleware: 'auth',
+  head() {
+    return {
+      title: `Dashboard | ${this.$config.title}`
+    };
+  }
 });
 </script>
 

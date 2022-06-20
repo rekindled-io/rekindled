@@ -2,7 +2,7 @@
   <Nuxt-Link
     :to="link"
     tag="div"
-    class="w-full text-center text-gray-600 bg-gray-100 py-3 block text-sm hover:border-gray-400 focus:outline-none border-b-2 border-gray-300 cursor-pointer"
+    class="flex items-center justify-center w-full py-3 text-sm text-center text-gray-600 bg-gray-100 border-b-2 border-gray-300 cursor-pointer hover:border-gray-400 focus:outline-none"
   >
     {{ name }}
   </Nuxt-Link>

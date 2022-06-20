@@ -59,7 +59,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import { NotificationList } from '~/modules/notification/Notification';
+import { NotificationList } from '@/modules/notification/Notification';
 
 export default Vue.extend({
   data() {

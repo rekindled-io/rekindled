@@ -14,8 +14,12 @@
           <div v-else>
             <div v-if="handles.results">
               <Message :text="handles.count + ` handle/s found`" />
+              <div v-if="handles.results.length == 0" class="w-1/2 py-4 mx-auto text-xl text-center">
+                We can't find any matches for <span class="italic">{{ this.$route.query.name }}</span
+                >.
+              </div>
               <div class="grid grid-cols-1 gap-12 my-8 sm:grid-cols-2 lg:grid-cols-2">
-                <CardsHandle v-for="handle in handles.results" :data="handle" :key="handle.id" showUserLink />
+                <CardsHandle v-for="handle in handles.results" :data="handle" :key="handle.id" showProfileLink />
               </div>
               <div v-if="handles.count" class="w-1/3 mx-auto space-x-4">
                 <Paginate
@@ -36,11 +40,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { buildURLQuery } from '@/utils/filters';
+import { HandleList } from '~/modules/handle/Handle';
 
 export default Vue.extend({
   data() {
     return {
-      handles: {}
+      handles: {} as HandleList
     };
   },
 
@@ -51,7 +56,7 @@ export default Vue.extend({
         game: this.$route.query.game || '',
         platform: this.$route.query.platform || '',
         page: this.$route.query.page || 1,
-        includeSelf: false
+        includeSelf: 0
       });
     }
   },

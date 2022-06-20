@@ -1,6 +1,6 @@
 <template>
   <Transition name="fade" appear>
-    <div class="fixed inset-0 z-20 flex items-center justify-center bg-opacity-60">
+    <div class="fixed inset-0 z-[200] flex items-center justify-center bg-opacity-60">
       <div class="fixed inset-0 transition bg-black opacity-40" @click="$emit('cancel')"></div>
       <div class="z-50 flex flex-col w-1/3 mx-auto" @click.stop>
         <div class="flex justify-between items-center p-3 mb-0.5 bg-yellow-400 rounded">

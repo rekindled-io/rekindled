@@ -14,7 +14,7 @@
       <span class="text-xl font-semibold">No handles found.</span>
     </div>
 
-    <div v-else>
+    <div class="mt-4" v-else>
       <Datatable :data="handles.results" :keys="handles.results[0].dataTableKeys()" :total="handles.count">
         <template #name="{ item }">
           <span class="text-lg font-bold text-gray-600">
@@ -47,60 +47,28 @@
         />
       </div>
     </div>
-
     <LazyModalsHandle v-if="modalHandleStatus" @cancel="modalHandleStatus = false" @save="$fetch" />
-    <ModalsAction
-      @action="deleteResource"
-      @cancel="deleteModal = false"
-      v-if="deleteModal"
-      message="Are you sure you want to delete handle? This can't be undone."
-    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import '@/plugins/truncate';
 import { buildURLQuery } from '@/utils/filters';
-import { Handle } from '~/modules/handle/Handle';
+import { HandleList } from '~/modules/handle/Handle';
 
 export default Vue.extend({
   data() {
     return {
-      data: [],
-      deleteModal: false,
-      selectedItem: {} as Handle,
       modalHandleStatus: false,
-      handles: {},
+      handles: {} as HandleList,
       search: {
         name: '',
         platform: '',
         game: '',
         ordering: 'created'
       },
-      test: '',
-      showToolTip: false
+      user: JSON.parse(localStorage.getItem('user') || '')?.username
     };
-  },
-
-  methods: {
-    openModal() {
-      this.modalHandleStatus = true;
-    },
-    closeMethod() {
-      this.deleteModal = false;
-    },
-    deletePrompt(item: Handle) {
-      this.selectedItem = item;
-      this.deleteModal = true;
-    },
-    async deleteResource() {
-      await this.$axios.delete(`/handles/${this.selectedItem}/`);
-      this.closeMethod();
-      this.deleteModal = false;
-      this.selectedItem = {} as Handle;
-      this.$fetch();
-    }
   },
 
   computed: {
@@ -115,6 +83,12 @@ export default Vue.extend({
         includeSelf: true,
         user: JSON.parse(localStorage.getItem('user') || '')?.username
       });
+    }
+  },
+
+  methods: {
+    openModal() {
+      this.modalHandleStatus = true;
     }
   },
 

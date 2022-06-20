@@ -16,18 +16,20 @@
         @mouseover="mouseover"
         @mouseleave="mouseleave"
       >
-        <slot name="body" />
+        <slot name="body"></slot>
       </div>
     </transition>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   data() {
     return {
       showMenu: false,
-      timer: null
+      timer: 0
     };
   },
 
@@ -35,17 +37,19 @@ export default {
     toggleMenu() {
       this.showMenu = !this.showMenu;
     },
+
     mouseover() {
       if (this.timer) {
         clearTimeout(this.timer);
       }
       this.showMenu = true;
     },
+
     mouseleave() {
-      this.timer = setTimeout(() => {
+      this.timer = window.setTimeout(() => {
         this.showMenu = false;
       }, 100);
     }
   }
-};
+});
 </script>

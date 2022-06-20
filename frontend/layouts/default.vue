@@ -1,12 +1,11 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <LazyToast v-if="toast.message" :type="toast.type">{{ toast.message }}</LazyToast>
-
     <LayoutHeader />
-    <div class="flex-grow bg-gray-100">
+    <div class="flex-grow pb-10 mt-16 bg-gray-100">
       <nuxt />
     </div>
-    <LayoutFooter />
+    <LayoutFooter class="top-[81px]" />
   </div>
 </template>
 

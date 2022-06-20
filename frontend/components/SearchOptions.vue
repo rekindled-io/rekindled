@@ -1,31 +1,27 @@
 <template>
-  <form @submit.prevent="getSearchResults()">
-    <div class="items-center justify-center border-gray-500 rounded">
-      <span class="text-xs text-gray-500">Search options</span>
+  <nav class="sticky flex w-full top-20">
+    <form class="w-full" @submit.prevent="getSearchResults()">
+      <span class="text-xs font-semibold text-gray-500">Search options</span>
       <div class="flex flex-col w-full space-y-4">
-        <div>
-          <v-select
-            v-model="gameFilter"
-            placeholder="All games"
-            label="name"
-            :options="games.results"
-            :reduce="(game) => game.name"
-            class="style-chooser"
-          />
-        </div>
-        <div>
-          <v-select
-            v-model="platformFilter"
-            placeholder="All platforms"
-            label="name"
-            :options="platforms"
-            :reduce="(platform) => platform.name"
-            class="style-chooser"
-          />
-        </div>
+        <v-select
+          v-model="gameFilter"
+          placeholder="All games"
+          label="name"
+          :options="games.results"
+          :reduce="(game) => game.name"
+          class="style-chooser"
+        />
+        <v-select
+          v-model="platformFilter"
+          placeholder="All platforms"
+          label="name"
+          :options="platforms"
+          :reduce="(platform) => platform.name"
+          class="style-chooser"
+        />
       </div>
-    </div>
-  </form>
+    </form>
+  </nav>
 </template>
 
 <script lang="ts">
@@ -42,7 +38,8 @@ export default MixinFilters.extend({
         path: '/search',
         query: {
           game: filter.game,
-          platform: filter.platform
+          platform: filter.platform,
+          name: filter.name
         }
       });
     }

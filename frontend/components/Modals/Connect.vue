@@ -33,6 +33,7 @@
                     >
                   </template>
                   <span :class="classes">{{ errors[0] }}</span>
+                  <span slot="no-options">No matching handles found.</span>
                 </v-select>
               </ValidationProvider>
             </div>
@@ -75,18 +76,6 @@ export default Vue.extend({
     }
   },
 
-  computed: {
-    ref(): VeeValidate {
-      return this.$refs.form as VeeValidate;
-    },
-    query() {
-      return buildURLQuery({
-        user: JSON.parse(localStorage.getItem('user') || '')?.username,
-        includeSelf: false
-      });
-    }
-  },
-
   data() {
     return {
       loading: false,
@@ -98,25 +87,49 @@ export default Vue.extend({
     };
   },
 
+  computed: {
+    ref(): VeeValidate {
+      return this.$refs.form as VeeValidate;
+    },
+
+    query(): string {
+      return buildURLQuery({
+        user: JSON.parse(localStorage.getItem('user') || '')?.username,
+        game: this.data.game_and_platform.game_name,
+        platform: this.data.game_and_platform.platform_name,
+        includeSelf: true
+      });
+    }
+  },
+
   methods: {
     close() {
       this.$emit('cancel');
     },
 
     async save() {
+      this.loading = true;
+
       let payload = {
         source_handle_id: this.form.handle!.id,
-        handle_id: this.data.id,
+        target_handle_id: this.data.id,
         message: this.form.message
       };
 
       try {
         await this.$axios.$post('/kindles/direct/', payload);
+        this.$store.dispatch('toast/success', 'Kindle successfully sent.');
         this.close();
       } catch (e: any) {
-        this.ref.setErrors(e.response.data);
+        this.$store.dispatch('toast/error', 'Error creating kindle.');
+        this.$nextTick(() => {
+          this.ref.setErrors(e.response.data);
+        });
+      } finally {
+        this.loading = false;
       }
     },
+
     getOptionLabel(option: any) {
       return (option && option.name) || '';
     }

@@ -7,10 +7,10 @@
           <span class="text-">lost gaming friendships</span>
         </p>
         <div class="my-8 text-lg font-semibold tracking-tight text-blue-200">
-          Rekindled is a repository and archive of gaming handles that enables you to reconnect with old friends.
+          Rekindled is an archive of gaming handles that enables gamers to reconnect with your old gaming buttbuddies.
           <p>
-            Try it out by searching for a handle below, or
-            <Nuxt-Link class="font-black" to="/register">sign-up</Nuxt-Link>
+            Try it out by searching for a handle above, or
+            <Nuxt-Link class="font-black text-yellow-300" to="/register">sign-up</Nuxt-Link>
             to get started.
           </p>
         </div>
