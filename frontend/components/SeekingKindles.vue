@@ -2,30 +2,18 @@
   <div>
     <div class="flex mx-4 mt-4 space-x-4">
       <label class="relative">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          class="absolute w-4 h-4 pointer-events-none left-2 top-2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          ></path>
-        </svg>
+        <Icon class="absolute w-4 h-4 pointer-events-none left-2 top-2" name="search" />
         <input v-model="search.name" @keyup.enter="$fetch" class="search" type="text" placeholder="Search..." />
       </label>
       <button @click="openModal" type="button" class="primary-button">+ New</button>
     </div>
-    <div v-if="$fetchState.pending">
-      <Loading />
-    </div>
+
+    <Loading v-if="$fetchState.pending" />
+
     <div class="flex justify-center p-4 my-4" v-else-if="!this.kindles.count">
       <span class="text-xl font-semibold">No kindles found!</span>
     </div>
+
     <table v-else class="w-full mt-5 table-fixed">
       <thead class="text-xs font-medium text-gray-600 uppercase bg-gray-100 border-t-2 border-b-2">
         <tr>
@@ -78,13 +66,7 @@
         </tr>
       </tbody>
     </table>
-    <ModalsKindle v-if="modalHandleStatus" @cancel="modalHandleStatus = false" />
-    <ModalsAction
-      v-if="deleteModal"
-      @action="deleteResource"
-      @cancel="deleteModal = false"
-      message="Are you sure you want to delete handle? This can't be undone."
-    />
+    <ModalsSeekingKindle v-if="modalHandleStatus" @cancel="modalHandleStatus = false" />
   </div>
 </template>
 
@@ -104,28 +86,13 @@ export default {
       }
     };
   },
+
   methods: {
     openModal() {
       this.modalHandleStatus = true;
-    },
-    closeMethod() {
-      this.deleteModal = false;
-    },
-    deletePrompt(item) {
-      this.selectedItem = item;
-      this.deleteModal = true;
-    },
-    setActive(menuItem) {
-      this.activeItem = menuItem;
-    },
-    async deleteResource() {
-      await this.$axios.delete(`/kindles/${this.selectedItem}/`);
-      this.closeMethod();
-      this.deleteModal = false;
-      this.selectedItem = '';
-      this.$fetch();
     }
   },
+
   async fetch() {
     this.kindles = await this.$axios.$get(`/kindles/seeking/`);
   }

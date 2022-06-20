@@ -4,22 +4,13 @@
       <Loading v-if="$fetchState.pending" />
       <ValidationObserver v-else v-slot="{ invalid, handleSubmit }" ref="form">
         <form class="space-y-6" @submit.prevent="handleSubmit(save)">
-          <ValidationProvider slim rules="required|max:32" v-slot="{ errors, classes }" vid="name">
-            <input
-              class="w-full border-b-2 border-gray-500 px-2 font-bold text-sm py-0.5 pl-2 outline-none"
-              v-model="form.from_handle"
-              placeholder="I am looking for..."
-              label="name"
-            />
-            <span :class="classes">{{ errors[0] }}</span>
-          </ValidationProvider>
+          <FormInput v-model="form.from_handle" rules="required|max:32" name="name" label="Name" />
           <v-select
             v-model="form.to_handle"
             placeholder="Connecting handle"
             label="name"
             :options="handles.results"
             class="style-chooser"
-            transition=""
           >
             <template slot="option" slot-scope="option">
               {{ option.name }}
@@ -28,13 +19,15 @@
               >
             </template>
           </v-select>
+
           <textarea
             v-model="form.message"
             type="text"
             name=""
             placeholder="Type in a short message to the recipient."
             class="textbox"
-          ></textarea>
+          />
+
           <FormButton :loading="$fetchState.pending" :disabled="invalid" />
         </form>
       </ValidationObserver>
@@ -42,8 +35,15 @@
   </ModalsBase>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+import { Game, GameList } from '~/modules/game/Game';
+import { Handle, HandleList } from '~/modules/handle/Handle';
+import { Platform } from '~/modules/platform/Platform';
+import { User } from '~/modules/user/User';
+import { buildURLQuery } from '~/utils/filters';
+
+export default Vue.extend({
   props: {
     open: {
       type: Boolean,
@@ -53,19 +53,28 @@ export default {
 
   data() {
     return {
-      handles: [],
-      games: [],
-      platforms: [],
+      handles: {} as HandleList,
+      games: {} as GameList,
+      platforms: {} as Platform,
       form: {
-        to_handle: '',
+        to_handle: {} as Handle,
         from_handle: '',
-        for_game: '',
-        on_platform: '',
-        from_user: '',
+        for_game: {} as Game,
+        on_platform: {} as Platform,
+        from_user: {} as User,
         message: ''
       },
       loading: false
     };
+  },
+
+  computed: {
+    query() {
+      return buildURLQuery({
+        user: JSON.parse(localStorage.getItem('user') || '')?.username,
+        includeSelf: true
+      });
+    }
   },
 
   methods: {
@@ -76,10 +85,10 @@ export default {
       this.loading = true;
       let data = {
         source_handle_id: this.form.to_handle.id,
-        handle: this.form.from_handle,
+        target_handle: this.form.from_handle,
         game_and_platform: {
-          game_name: this.form.for_game.name,
-          platform_name: this.form.on_platform
+          game_name: this.form.to_handle.game_and_platform.game_name,
+          platform_name: this.form.to_handle.game_and_platform.platform_name
         },
         sender: this.form.from_user,
         message: this.form.message
@@ -95,10 +104,9 @@ export default {
   },
 
   async fetch() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.handles = await this.$axios.$get(`/handles/user/${user.username}/`);
-    this.games = await this.$axios.$get(`/games/`);
-    this.platforms = await this.$axios.$get(`/platforms/`);
+    this.handles = await this.$services.handle.list(this.query);
+    this.games = await this.$services.game.list();
+    this.platforms = await this.$services.platform.list();
   }
-};
+});
 </script>
