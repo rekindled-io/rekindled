@@ -15,6 +15,12 @@ class GameAndPlatformSerializer(serializers.ModelSerializer):
     game_name = serializers.SlugRelatedField(
         source="game", queryset=Game.objects.all(), required=True, slug_field="name"
     )
+    game_abbreviation = serializers.SlugRelatedField(
+        source="game", read_only=True, slug_field="abbreviation"
+    )
+    platform_abbreviation = serializers.SlugRelatedField(
+        source="platform", read_only=True, slug_field="abbreviation"
+    )
     platform_name = serializers.SlugRelatedField(
         source="platform",
         queryset=Platform.objects.all(),
@@ -26,7 +32,7 @@ class GameAndPlatformSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GameAndPlatform
-        fields = ["game_name", "platform_name", "cover", "icon"]
+        fields = ["game_name", "platform_name", "cover", "icon", "game_abbreviation", "platform_abbreviation"]
 
 
 class GameSimplifiedSerializer(serializers.ModelSerializer):
