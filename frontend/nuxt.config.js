@@ -2,7 +2,7 @@ export default {
   ssr: false,
 
   head: {
-    title: 'rekindled-frontend',
+    title: 'Rekindled | Reconnecting long lost gamers',
     htmlAttrs: {
       lang: 'en'
     },
@@ -50,7 +50,8 @@ export default {
   },
 
   publicRuntimeConfig: {
-    baseURL: process.env.BASE_URL || 'localhost:8000'
+    baseURL: process.env.BASE_URL || 'localhost:8000',
+    title: 'Rekindled'
   },
 
   recaptcha: {
