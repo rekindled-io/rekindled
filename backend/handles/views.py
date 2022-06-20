@@ -4,9 +4,13 @@ from rest_framework import viewsets, status, mixins
 from django.db import IntegrityError
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from django.db.models import Count
+from django.db.models import F
 
 from .filters import HandleFilter
 from django_filters.rest_framework.backends import DjangoFilterBackend
+
+from distutils.util import strtobool
 
 
 class CreateListMixin:
@@ -30,8 +34,10 @@ class HandleViewSet(CreateListMixin, viewsets.ModelViewSet):
             "game_and_platform__platform",
         )
 
+
         # Don't return user's own handles in results
-        if self.request.user.is_authenticated and not self.request.query_params.get("includeSelf"):
+        include_self = strtobool(self.request.query_params.get("includeSelf", "True"))
+        if self.request.user.is_authenticated and not include_self:
             qs = qs.exclude(user=self.request.user)
 
         return qs
@@ -43,10 +49,17 @@ class HandleViewSet(CreateListMixin, viewsets.ModelViewSet):
             content = {"name": ["A handle with that name already exists."]}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=["get"], )
+    @action(detail=False, methods=["get"])
     def recent(self, request):
-        qs = self.get_queryset().order_by("created")
+        qs = self.get_queryset().order_by("-created")
         filtered_qs = self.filter_queryset(qs)[:5]
         serializer = self.get_serializer(filtered_qs, many=True)
 
         return Response(serializer.data, status.HTTP_200_OK)
+
+    @action(detail=False, methods=["get"])
+    def stats(self, request):
+        qs = self.filter_queryset(self.queryset)
+        result = list(qs.values(game=F('game_and_platform__game__name')).annotate(count=Count('game_and_platform__game')))
+
+        return Response(result, status.HTTP_200_OK)
