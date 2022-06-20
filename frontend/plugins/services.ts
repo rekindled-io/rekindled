@@ -21,6 +21,12 @@ declare module 'vue/types/vue' {
   }
 }
 
+declare module '@nuxt/types' {
+  interface Context {
+    readonly $services: Services;
+  }
+}
+
 const servicePlugin: Plugin = ({ app: { $axios } }, inject) => {
   const services: Services = {
     user: new UserService($axios),
