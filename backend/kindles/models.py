@@ -31,7 +31,7 @@ class BaseKindle(models.Model):
         ]
 
     def __str__(self):
-        return f"#{self.id} - {self.source_user.username} to {self.handle}"
+        return f"#{self.id} - {self.source_user.username} to {self.source_handle}"
 
 
 class SeekingKindle(BaseKindle):
