@@ -37,11 +37,6 @@ class UserDetailTest(UserBase):
         super().setUp()
         self.url = reverse("user-detail", kwargs={"username": self.user.username})
 
-    def test_get_user_detail(self):
-        res = self.client.get(self.url)
-
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-
     def test_get_user_when_anonymous(self):
         res = self.client.get(self.url)
 
