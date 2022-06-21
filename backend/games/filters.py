@@ -6,7 +6,7 @@ from .models import Game, Platform
 class GameFilter(filters.FilterSet):
     name = filters.ModelMultipleChoiceFilter(
         field_name="name",
-        lookup_expr="icontains",
+        lookup_expr="exact",
         queryset=Game.objects.all(),
         to_field_name="name",
     )
