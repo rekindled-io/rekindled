@@ -34,7 +34,6 @@ class HandleViewSet(CreateListMixin, viewsets.ModelViewSet):
             "game_and_platform__platform",
         )
 
-
         # Don't return user's own handles in results
         include_self = strtobool(self.request.query_params.get("includeSelf", "True"))
         if self.request.user.is_authenticated and not include_self:
@@ -60,6 +59,10 @@ class HandleViewSet(CreateListMixin, viewsets.ModelViewSet):
     @action(detail=False, methods=["get"])
     def stats(self, request):
         qs = self.filter_queryset(self.queryset)
-        result = list(qs.values(game=F('game_and_platform__game__name')).annotate(count=Count('game_and_platform__game')))
+        result = list(
+            qs.values(game=F("game_and_platform__game__name")).annotate(
+                count=Count("game_and_platform__game")
+            )
+        )
 
         return Response(result, status.HTTP_200_OK)

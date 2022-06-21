@@ -6,9 +6,14 @@ from django.db import transaction
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
 
-from .testing_factories import (GameAndPlatformFactory, GameFactory,
-                       GameWithPlatformFactory, HandleFactory, PlatformFactory,
-                       UserFactory)
+from .testing_factories import (
+    GameAndPlatformFactory,
+    GameFactory,
+    GameWithPlatformFactory,
+    HandleFactory,
+    PlatformFactory,
+    UserFactory,
+)
 from rekindled import settings
 from games.models import Game, GameAndPlatform, Platform
 from handles.models import Handle
@@ -62,7 +67,7 @@ class DatabaseSeeder:
 
         if num_games == 0:
             num_games = len(DatabaseSeeder.GAME_CHOICES)
-            
+
         self.num_users = num_users
         self.num_platforms = num_platforms
         self.num_games = num_games
@@ -102,7 +107,7 @@ class DatabaseSeeder:
             except IntegrityError:
                 print(f"Platform {name} already exists, skipping.")
                 pass
-        
+
         self.platforms = list(Platform.objects.all())
 
         for name in DatabaseSeeder.GAME_CHOICES[: self.num_games]:

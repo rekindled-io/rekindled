@@ -59,7 +59,10 @@ class SeekingKindleSerializer(KindleBaseSerializer):
 
     class Meta:
         model = SeekingKindle
-        fields = KindleBaseSerializer.Meta.fields + ["target_handle", "game_and_platform"]
+        fields = KindleBaseSerializer.Meta.fields + [
+            "target_handle",
+            "game_and_platform",
+        ]
 
     def create(self, validated_data):
         instance = None
@@ -94,7 +97,10 @@ class DirectKindleSerializer(KindleBaseSerializer):
 
     class Meta:
         model = DirectKindle
-        fields = KindleBaseSerializer.Meta.fields + ["target_handle", "target_handle_id"]
+        fields = KindleBaseSerializer.Meta.fields + [
+            "target_handle",
+            "target_handle_id",
+        ]
 
     def create(self, validated_data):
         if "source_user" not in validated_data:

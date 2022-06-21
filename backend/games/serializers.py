@@ -32,7 +32,14 @@ class GameAndPlatformSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GameAndPlatform
-        fields = ["game_name", "platform_name", "cover", "icon", "game_abbreviation", "platform_abbreviation"]
+        fields = [
+            "game_name",
+            "platform_name",
+            "cover",
+            "icon",
+            "game_abbreviation",
+            "platform_abbreviation",
+        ]
 
 
 class GameSimplifiedSerializer(serializers.ModelSerializer):

@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 
 from utils.seed_database import DatabaseSeeder
 
+
 class Command(BaseCommand):
     help = "Generates dummy data for a dev environment."
 
@@ -9,5 +10,5 @@ class Command(BaseCommand):
 
         dbs = DatabaseSeeder()
 
-        #dbs.wipe_database()
+        # dbs.wipe_database()
         dbs.populate()

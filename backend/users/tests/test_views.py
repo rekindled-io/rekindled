@@ -126,7 +126,7 @@ class UserListTest(UserBase):
             "captcha": "cowabunga",
         }
         res = self.client.post(self.url, data)
-        
+
         self.assertTrue(res.data["password_confirm"])
         self.assertEquals(res.status_code, status.HTTP_400_BAD_REQUEST)
 

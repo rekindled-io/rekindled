@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "handles",
     "kindles",
     "notifications",
-    "keen"
+    "keen",
 ]
 
 MIDDLEWARE = [
@@ -100,7 +100,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CAPTCHA_SECRET_KEY = env("CAPTCHA_SECRET_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe")
+CAPTCHA_SECRET_KEY = env(
+    "CAPTCHA_SECRET_KEY", default="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+)
 
 #############################
 # Security

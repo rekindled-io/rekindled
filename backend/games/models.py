@@ -7,13 +7,15 @@ def _get_upload_to_path(instance, filename, name):
     _, ext = os.path.splitext(filename)
     return f"{instance.slug}/{name}{ext}"
 
+
 def rename_and_set_upload_path(name):
     return partial(_get_upload_to_path, name=name)
+
 
 class Game(models.Model):
     name = models.CharField(null=False, unique=True, max_length=128)
     slug = models.SlugField(null=False, unique=True)
-    abbreviation = models.CharField(null=True, unique=True, max_length=8) 
+    abbreviation = models.CharField(null=True, unique=True, max_length=8)
     image = models.ImageField(
         default="image.jpg", upload_to=rename_and_set_upload_path(name="image")
     )
@@ -33,7 +35,7 @@ class Game(models.Model):
 
 class Platform(models.Model):
     name = models.CharField(max_length=32, unique=True)
-    abbreviation = models.CharField(null=True, unique=True, max_length=8) 
+    abbreviation = models.CharField(null=True, unique=True, max_length=8)
     games = models.ManyToManyField(Game, through="GameAndPlatform", related_name="+")
 
     def __str__(self):

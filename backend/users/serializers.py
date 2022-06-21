@@ -22,7 +22,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "discord_name",
             "discord_account_number",
             "discord_id",
-            "steam_id"
+            "steam_id",
         ]
 
 
