@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-          if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Migrate database
         env:
