@@ -5,6 +5,11 @@ on: [push, pull_request]
 jobs:
   backend-ci:
     runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: "test"
+      DEBUG: True
+      CORS_WHITELIST: "*"
+      CSRF_WHITELIST: "*"
     defaults:
       run:
         working-directory: ./backend
@@ -39,11 +44,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Migrate database
-        env:
-          SECRET_KEY: "test"
-          DEBUG: True
-          CORS_WHITELIST: "http://localhost,http://localhost:3000"
-          CSRF_WHITELIST: "http://localhost,http://localhost:3000"
         run: |
           poetry run python manage.py migrate
 
