@@ -44,7 +44,7 @@ jobs:
           DEBUG: True
           CORS_WHITELIST: "*"
           CSRF_WHITELIST: "*"
-          CORS_ORIGIN_WHITELIST: "http://*"
+          CORS_ORIGIN_WHITELIST: "http://localhost:3000"
         run: |
           poetry run python manage.py migrate
 
@@ -54,6 +54,6 @@ jobs:
           DEBUG: True
           CORS_WHITELIST: "*"
           CSRF_WHITELIST: "*"
-          CORS_ORIGIN_WHITELIST: "*"
+          CORS_ORIGIN_WHITELIST: "http://localhost:3000"
         run: |
           poetry run python manage.py test
