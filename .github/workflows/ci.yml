@@ -41,6 +41,9 @@ jobs:
       - name: Migrate database
         env:
           SECRET_KEY: "test"
+          DEBUG: True
+          CORS_WHITELIST: "http://localhost,http://localhost:3000"
+          CSRF_WHITELIST: "http://localhost,http://localhost:3000"
         run: |
           poetry run python manage.py migrate
 
