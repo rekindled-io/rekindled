@@ -3,7 +3,7 @@
     <template #body>
       <Loading v-if="$fetchState.pending" />
       <div v-else>
-        <ValidationObserver v-slot="{ invalid, handleSubmit }" ref="form">
+        <ValidationObserver v-slot="{ passed, handleSubmit, invalid }" ref="form">
           <form class="space-y-8" @submit.prevent="handleSubmit(save)">
             <div class="w-full">
               <FormInput v-model="form.name" rules="required|max:32" name="name" label="Name" />
@@ -61,19 +61,19 @@
               <button
                 class="w-1/3 p-0 text-lg font-semibold duration-100 bg-gray-200 rounded"
                 :class="{
-                  'bg-gray-200 text-gray-300 cursor-not-allowed': invalid,
-                  'bg-gray-100 hover:bg-yellow-400': !invalid
+                  'bg-gray-200 text-gray-300 cursor-not-allowed': !passed,
+                  'bg-gray-100 hover:bg-yellow-400': passed
                 }"
                 @click.prevent="addRow"
-                :disabled="invalid"
+                :disabled="!passed"
               >
                 +
               </button>
               <button
                 class="w-1/3 p-0 text-lg font-semibold duration-100 bg-gray-200 rounded"
                 :class="{
-                  'bg-gray-200 text-gray-300 cursor-not-allowed': invalid,
-                  'bg-gray-100 hover:bg-yellow-400': !invalid
+                  'bg-gray-200 text-gray-300 cursor-not-allowed': !passed,
+                  'bg-gray-100 hover:bg-yellow-400': passed
                 }"
                 @click.prevent="removeRow"
                 :disabled="gameandplatforms.length <= 1"
@@ -81,7 +81,7 @@
                 -
               </button>
             </div>
-            <FormButton :loading="$fetchState.pending" :disabled="invalid" />
+            <FormButton :loading="$fetchState.pending" :disabled="!passed && invalid" />
           </form>
         </ValidationObserver>
       </div>

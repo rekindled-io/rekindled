@@ -7,7 +7,7 @@
         <div class="w-full p-4 bg-white border-2 border-black rounded">
           <span class="text-xl font-bold">User</span>
           <hr class="my-2" />
-          <ValidationObserver ref="form" v-slot="{ invalid, handleSubmit }">
+          <ValidationObserver ref="form" v-slot="{ passed, handleSubmit }">
             <form class="space-y-4" @submit.prevent="handleSubmit(save)">
               <FormInput v-model="form.email" rules="required|max:32|email" name="email" label="Email" hover />
               <FormInput v-model="form.location" rules="max:32" name="location" label="Location" hover />
@@ -21,7 +21,7 @@
                   class="w-full px-3 py-2 text-sm text-gray-900 placeholder-gray-500 transition duration-200 ease-in-out bg-gray-100 border-2 border-gray-100 rounded-md focus:outline-none focus:ring-yellow-400 focus:border-yellow-400 focus:bg-white"
                 ></textarea>
               </div>
-              <FormButton text="Update" :disabled="invalid" :loading="loading" />
+              <FormButton text="Update" :disabled="!passed" />
             </form>
           </ValidationObserver>
         </div>

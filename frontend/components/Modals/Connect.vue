@@ -2,7 +2,7 @@
   <ModalsBase :title="`Connect with ${data.name}`" v-on="$listeners">
     <template #body>
       <Loading v-if="$fetchState.pending" />
-      <ValidationObserver v-else v-slot="{ invalid, handleSubmit }" ref="form">
+      <ValidationObserver v-else v-slot="{ passed, handleSubmit }" ref="form">
         <form class="space-y-4" @submit.prevent="handleSubmit(save)">
           <div class="flex">
             <div class="w-full mr-2">
@@ -40,7 +40,7 @@
           </div>
           <div class="flex">
             <div class="w-full mr-2">
-              <label class="text-sm font-semibold text-gray-400 pointer-events-none"> Message </label>
+              <label class="text-sm font-semibold text-gray-400 pointer-events-none">Message</label>
               <textarea
                 v-model="form.message"
                 type="text"
@@ -50,7 +50,7 @@
             </div>
           </div>
           <span class="text-xs text-gray-600">Submitting will send a notification.</span>
-          <FormButton :loading="loading" :disabled="invalid" />
+          <FormButton :loading="loading" :disabled="!passed" />
         </form>
       </ValidationObserver>
     </template>

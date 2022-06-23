@@ -2,7 +2,7 @@
   <ModalsBase title="Drop a Kindle" :open="open" v-on="$listeners">
     <template #body>
       <Loading v-if="$fetchState.pending" />
-      <ValidationObserver v-else v-slot="{ invalid, handleSubmit }" ref="form">
+      <ValidationObserver v-else v-slot="{ passed, handleSubmit }" ref="form">
         <form class="space-y-6" @submit.prevent="handleSubmit(save)">
           <FormInput v-model="form.from_handle" rules="required|max:32" name="name" label="Name" />
           <v-select
@@ -28,7 +28,7 @@
             class="textbox"
           />
 
-          <FormButton :loading="$fetchState.pending" :disabled="invalid" />
+          <FormButton :loading="$fetchState.pending" :disabled="!passed" />
         </form>
       </ValidationObserver>
     </template>

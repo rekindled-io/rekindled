@@ -4,7 +4,7 @@
     <div class="flex items-center justify-center mt-8">
       <div class="auth-form-box">
         <div class="flex items-center justify-center mb-4 text-sm font-semibold text-gray-600">Welcome back!</div>
-        <ValidationObserver ref="form" v-slot="{ invalid, handleSubmit }">
+        <ValidationObserver ref="form" v-slot="{ handleSubmit, passed }">
           <form class="space-y-8" @submit.prevent="handleSubmit(login)">
             <FormInput
               v-model="username"
@@ -25,7 +25,7 @@
               required
               hover
             />
-            <FormButton text="Login" :disabled="invalid" :loading="loading" />
+            <FormButton text="Login" :disabled="!passed" :loading="loading" />
           </form>
         </ValidationObserver>
         <hr class="my-4" />

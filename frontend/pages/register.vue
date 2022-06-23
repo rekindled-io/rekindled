@@ -10,7 +10,7 @@
         <div v-if="isAuthenticated">You are already registered ;)</div>
 
         <div v-else>
-          <ValidationObserver ref="form" v-slot="{ invalid, handleSubmit }">
+          <ValidationObserver ref="form" v-slot="{ passed, handleSubmit }">
             <form class="space-y-8" @submit.prevent="handleSubmit(register)">
               <FormInput
                 v-model="username"
@@ -47,7 +47,7 @@
 
               <Recaptcha />
 
-              <FormButton text="Register" :disabled="invalid" :loading="loading" />
+              <FormButton text="Register" :disabled="!passed" :loading="loading" />
             </form>
           </ValidationObserver>
 
