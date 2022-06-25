@@ -1,9 +1,9 @@
+from django.contrib.auth import get_user_model
 from django_filters import rest_framework as filters
 
 from games.models import Game, Platform
 
 from .models import Handle
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 

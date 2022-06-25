@@ -1,10 +1,9 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
 from django.contrib.humanize.templatetags import humanize
+from rest_framework import serializers
 
 from games.models import Game, GameAndPlatform, Platform
 from games.serializers import GameAndPlatformSerializer
-
 from rekindled.converters import HashidsConverter
 
 from .models import Handle

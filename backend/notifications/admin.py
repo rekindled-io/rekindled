@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Notification, Actor
+
+from .models import Actor, Notification
 
 
 @admin.register(Notification)

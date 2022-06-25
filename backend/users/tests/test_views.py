@@ -10,9 +10,9 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from utils.testing_factories import UserFactory
 from users.emails import email_activation
 from users.utils import decode_uid, encode_uid
+from utils.testing_factories import UserFactory
 
 User = get_user_model()
 

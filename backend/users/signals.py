@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .emails import email_activation
 
+from .emails import email_activation
 from .models import Profile
 
 User = get_user_model()

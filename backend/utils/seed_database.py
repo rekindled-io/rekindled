@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
@@ -6,20 +7,14 @@ from django.db import transaction
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
 
-from .testing_factories import (
-    GameAndPlatformFactory,
-    GameFactory,
-    GameWithPlatformFactory,
-    HandleFactory,
-    PlatformFactory,
-    UserFactory,
-)
-from rekindled import settings
 from games.models import Game, GameAndPlatform, Platform
 from handles.models import Handle
 from kindles.models import DirectKindle, SeekingKindle
+from rekindled import settings
 
-from datetime import datetime
+from .testing_factories import (GameAndPlatformFactory, GameFactory,
+                                GameWithPlatformFactory, HandleFactory,
+                                PlatformFactory, UserFactory)
 
 User = get_user_model()
 

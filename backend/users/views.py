@@ -1,15 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import render
-from rest_framework import viewsets
+from django.utils.encoding import DjangoUnicodeDecodeError
+from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rekindled.permissions import AnonymousCreateAndOwnerUpdate
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.utils.encoding import DjangoUnicodeDecodeError
-from .utils import decode_uid, encode_uid
-from rest_framework import status
+
+from rekindled.permissions import AnonymousCreateAndOwnerUpdate
 
 from .serializers import UserSerializer
+from .utils import decode_uid, encode_uid
 
 User = get_user_model()
 

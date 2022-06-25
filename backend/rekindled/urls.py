@@ -4,12 +4,12 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 
-from jwt_tokens.urls import urlpatterns as TokenURL
-from users.urls import router as UserRouter
 from games.urls import router as GameRouter
 from handles.urls import router as HandleRouter
+from jwt_tokens.urls import urlpatterns as TokenURL
 from kindles.urls import router as KindleRouter
 from notifications.urls import router as NotificationRouter
+from users.urls import router as UserRouter
 
 router = routers.SimpleRouter()
 

@@ -1,21 +1,18 @@
+from datetime import datetime, timedelta
+
+from django.db.models import Count
 from django.db.models.expressions import F, Window
 from django.db.models.functions.window import Rank
-
-from rest_framework import mixins, status, viewsets, generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 
-from django.db.models import Count
-
-from django_filters.rest_framework import DjangoFilterBackend
-
-from .models import Game, GameAndPlatform, Platform
-from .serializers import GameSerializer, GameSimplifiedSerializer, PlatformSerializer
-
 from .filters import GameFilter
-
-from datetime import timedelta, datetime
+from .models import Game, GameAndPlatform, Platform
+from .serializers import (GameSerializer, GameSimplifiedSerializer,
+                          PlatformSerializer)
 
 
 class GameViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

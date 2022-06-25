@@ -1,6 +1,7 @@
 import os
-from django.db import models
 from functools import partial
+
+from django.db import models
 
 
 def _get_upload_to_path(instance, filename, name):

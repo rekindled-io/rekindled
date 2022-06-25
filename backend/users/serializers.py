@@ -1,12 +1,12 @@
-import requests
+import hashlib
 
+import requests
 from django.contrib.auth import get_user_model
 from rest_framework import fields, serializers
 from rest_framework.serializers import ValidationError
 from rest_framework.validators import UniqueValidator
-from rekindled import settings
 
-import hashlib
+from rekindled import settings
 
 from .models import Profile
 

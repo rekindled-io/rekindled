@@ -1,16 +1,15 @@
-from .models import Handle
-from .serializers import HandleSerializer
-from rest_framework import viewsets, status, mixins
+from distutils.util import strtobool
+
 from django.db import IntegrityError
-from rest_framework.response import Response
+from django.db.models import Count, F
+from django_filters.rest_framework.backends import DjangoFilterBackend
+from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from django.db.models import Count
-from django.db.models import F
+from rest_framework.response import Response
 
 from .filters import HandleFilter
-from django_filters.rest_framework.backends import DjangoFilterBackend
-
-from distutils.util import strtobool
+from .models import Handle
+from .serializers import HandleSerializer
 
 
 class CreateListMixin:
