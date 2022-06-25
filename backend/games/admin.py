@@ -11,14 +11,16 @@ class GameAndPlatformInline(admin.TabularInline):
 
 @admin.register(Game)
 class GamesAdmin(admin.ModelAdmin):
+    search_fields = ['name']
     inlines = [GameAndPlatformInline]
+    ordering = ['name']
 
 
 @admin.register(Platform)
 class PlatformAdmin(admin.ModelAdmin):
-    pass
+    ordering = ['name']
 
 
 @admin.register(GameAndPlatform)
 class GameAndPlatformAdmin(admin.ModelAdmin):
-    pass
+    ordering = ['game__name']

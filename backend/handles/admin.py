@@ -9,7 +9,6 @@ class HandleAdmin(admin.ModelAdmin):
     list_filter = [
         "game_and_platform__game",
         "game_and_platform__platform",
-        "user",
         "region",
     ]
     search_fields = ["name"]
