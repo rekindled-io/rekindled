@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from django.contrib.humanize.templatetags import humanize
 
 from games.models import Game, GameAndPlatform, Platform
 from games.serializers import GameAndPlatformSerializer
@@ -47,6 +48,7 @@ class HandleSerializer(serializers.ModelSerializer):
     game_and_platform = GameAndPlatformSerializer()
     start_period = serializers.SerializerMethodField()
     end_period = serializers.SerializerMethodField()
+    timestamp = serializers.SerializerMethodField()
 
     class Meta:
         model = Handle
@@ -58,6 +60,8 @@ class HandleSerializer(serializers.ModelSerializer):
             "start_period",
             "end_period",
             "region",
+            "timestamp",
+            "game",
         ]
         list_serializer_class = BulkCreateListSerializer
 
@@ -68,7 +72,9 @@ class HandleSerializer(serializers.ModelSerializer):
                 platform=value["platform"],
             )
         except GameAndPlatform.DoesNotExist:
-            raise serializers.ValidationError({"detail": "The game/platform doesn't exist."})
+            raise serializers.ValidationError(
+                {"detail": "The game/platform doesn't exist."}
+            )
 
         return value
 
@@ -99,3 +105,6 @@ class HandleSerializer(serializers.ModelSerializer):
 
     def get_end_period(self, obj):
         return obj.end_period.year if obj.end_period else None
+
+    def get_timestamp(self, obj):
+        return humanize.naturaltime(obj.created)
