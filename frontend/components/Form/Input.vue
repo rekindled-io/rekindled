@@ -6,7 +6,7 @@
         class="text-sm font-semibold pointer-events-none"
         :for="name"
         :class="{
-          'text-gray-400': !errors[0],
+          'text-gray-500': !errors[0],
           'text-red-600': errors[0],
           'pl-6': icon
         }"
@@ -19,7 +19,8 @@
         :type="type"
         :label="label"
         :required="required"
-        class="w-full text-gray-800 bg-transparent border-b-2 px-1 py-0.5 font-bold text-sm outline-none"
+        :placeholder="placeholder"
+        class="w-full text-gray-800 bg-transparent border-b-2 px-1 py-0.5 font-semibold text-sm outline-none"
         :class="{
           'border-red-600 placeholder-red-600': errors[0],
           'has-value': hasValue,
@@ -104,6 +105,12 @@ export default Vue.extend({
   watch: {
     innerValue(value: string) {
       this.$emit('input', value);
+    }
+  },
+
+  created() {
+    if (this.value) {
+      this.innerValue = this.value;
     }
   }
 });
