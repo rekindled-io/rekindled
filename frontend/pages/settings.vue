@@ -16,6 +16,7 @@
                 label="Email"
                 placeholder="whoami@example.com"
                 hover
+                immediate
               />
               <FormInput
                 v-model="form.profile.location"
@@ -24,6 +25,7 @@
                 label="Location"
                 placeholder="The Moon"
                 hover
+                immediate
               />
               <FormTextarea label="Bio" v-model="form.profile.bio" />
               <FormButton text="Update" :disabled="!passed" />
@@ -50,7 +52,8 @@ export default Vue.extend({
         username: '',
         email: '',
         bio: ''
-      }
+      },
+      t: true
     };
   },
 

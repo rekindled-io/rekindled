@@ -1,5 +1,5 @@
 <template>
-  <ValidationProvider v-slot="{ errors, classes }" tag="div" slim :rules="rules" :vid="vid">
+  <ValidationProvider v-slot="{ errors, classes }" :immediate="immediate" tag="div" slim :rules="rules" :vid="vid">
     <div class="relative">
       <Icon v-if="icon" class="absolute inset-y-0 w-6 h-6 pointer-events-none" :name="icon" />
       <label
@@ -40,6 +40,10 @@ import Vue from 'vue';
 export default Vue.extend({
   props: {
     required: {
+      type: Boolean,
+      default: false
+    },
+    immediate: {
       type: Boolean,
       default: false
     },
