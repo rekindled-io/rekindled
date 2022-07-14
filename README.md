@@ -1,9 +1,6 @@
-![banner](docs/media/banner.png)
+![banner](docs/assets/banner.png)
 
-<center>
-![Site Status](https://img.shields.io/badge/Site%20Status-WIP-yellow?style=for-the-badge)
-[![Build Status](https://img.shields.io/github/workflow/status/rekindled-io/rekindled/rekindled%20CI?style=for-the-badge)](https://github.com/rekindled-io/rekindled/actions)
-</center>
+![Site Status](https://img.shields.io/badge/Site%20Status-WIP-yellow?style=for-the-badge)&nbsp;[![Build Status](https://img.shields.io/github/workflow/status/rekindled-io/rekindled/rekindled%20CI?style=for-the-badge)](https://github.com/rekindled-io/rekindled/actions)
 
 ## About
 
@@ -11,4 +8,4 @@
 
 **Note** - This project is still under heavy development.
 
-![sample](docs/media/sample.png)
+![sample](docs/assets/sample.png)
